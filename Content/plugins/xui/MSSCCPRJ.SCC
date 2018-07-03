@@ -1,0 +1,30 @@
+SCC = This is a Source Code Control file.
+
+[ironman3.sln]
+SCC_Aux_Path = 192.168.100.2:8877:VSS_ROOT
+SCC_Project_Name = $/ironman3
+
+[MemberServerBLL.csproj]
+SCC_Aux_Path = 192.168.100.2:8877:VSS_ROOT
+SCC_Project_Name = $/ironman3/AuthServer/MemberServerBLL
+
+[MemberShipDAL.csproj]
+SCC_Aux_Path = 192.168.100.2:8877:VSS_ROOT
+SCC_Project_Name = $/ironman3/AuthServer/MemberShipDAL
+
+[BDMIS.FS.BLL.csproj]
+SCC_Aux_Path = 192.168.100.2:8877:VSS_ROOT
+SCC_Project_Name = $/ironman3/FileServer/BDMIS.FS.BLL
+
+[BDMIS.FS.Model.csproj]
+SCC_Aux_Path = 192.168.100.2:8877:VSS_ROOT
+SCC_Project_Name = $/ironman3/FileServer/BDMIS.FS.Model
+
+[FileServer.csproj]
+SCC_Aux_Path = 192.168.100.2:8877:VSS_ROOT
+SCC_Project_Name = $/ironman3/FileServer/FileServer
+
+[Ironman3.csproj]
+SCC_Aux_Path = 192.168.100.2:8877:VSS_ROOT
+SCC_Project_Name = $/ironman3/Ironman3
+

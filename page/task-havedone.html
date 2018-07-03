@@ -1,0 +1,57 @@
+﻿<div class="box">
+<div class="box-body">
+<table id="example1" class="table table-bordered table-striped r_table_list">
+<thead>
+<tr>
+    <th width="10%">环节说明</th>
+    <th width="35%">业务信息</th>
+    <th width="10%">办理信息</th>
+    <th width="15%">开始时间</th>
+    <th width="15%">签收时间</th>
+    <th width="15%">完成时间</th>
+    <th width="10%"><center>操作</center></th>
+</tr>
+</thead>
+</table>
+</div><!-- /.box-body -->
+
+<div id="showdetail"  class="box box-success box-solid" style="position: absolute;top:0;display:none; z-index:3;">
+        <div class="box-header with-border">
+            <h3 class="box-title">详细信息</h3>
+            <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+           <iframe id="detailiframe" width="100%"  height="300px" src="" frameborder="0"></iframe>
+        </div>
+</div>
+</div><!-- /.box -->
+
+<script type="text/javascript">
+    $(function () {
+        $("#example1").anTable({
+            url: host + "/api/workitemlist?state=1",
+            columns: [
+                        { "data": "TaskInstance.DisplayName" },
+                        { "data": "TaskInstance.BizInfo" },
+                        { "data": "Comments" },
+                        { "data": "CreatedTime" },
+                        { "data": "ClaimedTime" },
+                        { "data": "EndTime" }
+                     ],
+            columnDefs: [{ "orderable": false, "targets": 6, className: "edit_class", "defaultContent": '<div class="t_action"><a href="javascript:;" id="view" class="btn btn-block btn-info detail" title="详细信息" >详细</a></div>',
+                "render": function (data, type, row) { }
+            }],
+            done: function () {
+                $('#example1 tbody').on('click', 'a.detail', function (e) {
+                    var row = $('#example1').DataTable().row($(this).parents('tr')).data();
+                    var detailurl = "page/details/detail.html?WorkItemId=" + row.TaskInstance.Id + "&ProcessId=" + row.TaskInstance.ProcessId + "&Version=" + row.TaskInstance.Version + "&ProcessInstanceId=" + row.TaskInstance.ProcessInstanceId;
+                    $("#detailiframe").attr("src", detailurl);
+                    $("#showdetail").show();
+                });
+           }
+        });
+    });
+
+</script>

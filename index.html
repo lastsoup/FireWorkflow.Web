@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>工作流－主页</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="Content/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="Content/font/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="Content/dist/css/AdminLTE.css" />
+    <link rel="stylesheet" href="Content/dist/css/skins/_all-skins.min.css" />
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+      <header class="main-header">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>W</b>FL</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>Work</b>FLOW</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- Messages: style can be found in dropdown.less-->
+              <!-- Notifications: style can be found in dropdown.less -->
+              <li class="dropdown notifications-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-bell-o"></i>
+                  <span class="label label-warning">10</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">你有10条消息</li>
+                  <li>
+                    <!-- inner menu: contains the actual data -->
+                    <ul class="menu">
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-users text-aqua"></i>5个人关注了你
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-warning text-yellow"></i>看看
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-users text-red"></i> 6个新成员加入
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-shopping-cart text-green"></i>25条推荐
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-user text-red"></i> 你更新了你的用户名
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="footer"><a href="#">查看全部</a></li>
+                </ul>
+              </li>
+              <!-- Tasks: style can be found in dropdown.less -->
+              <!-- User Account: style can be found in dropdown.less -->
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img src="Content/dist/img/tongxiang1.jpg" class="user-image" alt="User Image">
+                  <span class="hidden-xs">manager</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="Content/dist/img/tongxiang2.jpg" class="img-circle" alt="User Image">
+                    <p>
+                      管理员
+                      <small>2016.12.15</small>
+                    </p>
+                  </li>
+                  <!-- Menu Body -->
+                  <li class="user-body">
+                    <div class="col-xs-4 text-center">
+                      <a href="#">关注</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="#">推荐</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="#">朋友</a>
+                    </div>
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="#" class="btn btn-default btn-flat">账号设置</a>
+                    </div>
+                    <div class="pull-right">
+                      <a href="#" class="btn btn-default btn-flat">退出</a>
+                    </div> 
+                  </li>
+                </ul>
+              </li>
+              <!-- Control Sidebar Toggle Button -->
+              <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar user panel -->
+          <!-- search form -->
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="搜索...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form>
+          <!-- /.search form -->
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu">
+            <li class="header">主导航</li>
+            <li class="active treeview">
+              <a href="#">
+                <i class="fa fa-tasks"></i> <span>业务</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="active"><a href="javascript:;" action-href="createtask" action-title="任务列表"><i class="fa fa-circle-o"></i>创建任务</a></li>
+                <li><a href="javascript:;" action-href="task-todo" action-title="待办列表"><i class="fa fa-circle-o"></i>待办事项</a></li>
+                <li><a href="javascript:;" action-href="task-havedone" action-title="已办列表"><i class="fa fa-circle-o"></i>已办事项</a></li>
+                 <li><a href="javascript:;" action-href="task-reject" action-title="待办列表"><i class="fa fa-circle-o"></i>退回事项</a></li>
+                <li><a href="javascript:;" action-href="task-finish" action-title="已办列表"><i class="fa fa-circle-o"></i>办结事项</a></li>
+                <li><a href="javascript:;" action-href="task-progress" action-title="进度列表"><i class="fa fa-circle-o"></i>进度查询</a></li>
+              </ul>
+            </li>
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-recycle"></i> <span>流程管理</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="javascript:;" action-href="flow-manage" action-title="流程列表"><i class="fa fa-circle-o"></i>我的流程</a></li>
+              </ul>
+            </li>
+
+              <li class="treeview">
+                  <a href="#">
+                      <i class="fa  fa-paint-brush"></i> <span>流程设计</span>
+                      <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                      <li><a href="javascript:;"><i class="fa fa-circle-o"></i>配置基础数据</a></li>
+                      <li><a target="_blank" id="wfdesinger" href="http://localhost:8084/wfdesigner/"><i class="fa fa-circle-o"></i>设计流程图</a></li>
+                      <li><a href="javascript:;"><i class="fa fa-circle-o"></i>配置数据库</a></li>
+                  </ul>
+              </li>
+            <li class="header">关于工作流</li>
+            <li><a href="#"><i class="fa fa-book"></i> <span>使用说明</span></a></li>
+          </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            <span id="mainHeadName"></span>
+            <small id="mainHeadContent"></small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>业务</a></li>
+            <li class="active" id="mainHeadActive"></li>
+          </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content" id="maincontent">
+
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 1.0.0
+        </div>
+        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Ananas Studio</a>.</strong> All rights reserved.
+      </footer>
+
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs"></ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <!-- Home tab content -->
+          <div class="tab-pane" id="control-sidebar-home-tab"></div>
+        </div>
+      </aside>
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="Content/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+    <!-- jQuery UI 1.11.4 -->
+    <script src="Content/plugins/jQueryUI/jquery-ui.min.js"></script>
+
+    <script src="Content/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="Content/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="Content/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="Content/dist/js/app.min.js"></script>
+    <script src="Content/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="Content/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="Content/plugins/xui/xui-2.3.2.js"></script>
+    <script src="Content/dist/js/demo.js"></script>
+    <script>
+        document.write('<script type="text/javascript" src="Content/dist/js/plugin.js?' + Math.random() + '"><\/script>');
+        document.write('<script type="text/javascript" src="Content/dist/js/page.js?' + Math.random() + '"><\/script>');
+    </script>
+  </body>
+</html>

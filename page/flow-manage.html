@@ -1,0 +1,137 @@
+﻿<div class="box">
+<div class="box-header">
+    <h3 class="box-title">流程管理</h3>
+</div><!-- /.box-header -->
+<div class="box-body">
+    <div class="r_label">
+                <a href="#" class="x-button">
+                    添加
+                </a>
+    </div>
+<table id="example1" class="table table-bordered table-striped">
+<thead>
+<tr>
+    <th>流程ID</th>
+    <th>英文名称</th>
+    <th>流程显示名称</th>
+    <th>版本号</th>
+    <th><center>是否发布</center></th>
+    <th>修改者</th>
+    <th>修改时间</th>
+    <th>发布人</th>
+    <th>发布时间</th>
+    <th><center>操作</center></th>
+</tr>
+</thead>
+</table>
+</div>
+<div class="box-body">
+<table id="example2" class="table table-bordered table-striped">
+<thead>
+<tr>
+    <th width="35%">业务信息</th>
+    <th width="35%">创建人</th>
+    <th width="10%"><center>操作</center></th>
+</tr>
+</thead>
+</table>
+
+</div>
+<div id="showdetail"  class="box box-success box-solid" style="position: absolute;bottom:0;display:none; z-index:3;">
+        <div class="box-header with-border">
+            <h3 class="box-title">详细信息</h3>
+            <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+           <iframe id="detailiframe" width="100%"  height="300px" src="" frameborder="0"></iframe>
+        </div>
+</div>
+</div><!-- /.box -->
+
+<script type="text/javascript">
+    $(function () {
+        //,"render": function ( data, type, row ) {
+        //var msec = data.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1");
+        //var value = new Date(Number.parseInt(msec)).Format("yyyy-MM-dd");
+        //return value;
+        var dt = $("#example2").anTable({ url: null,
+            columns: [
+                    { "data": "DisplayName" },
+                    { "data": "CreatorId" }
+                 ],
+            columnDefs: [{ "orderable": false, "targets": 2, className: "edit_class", "defaultContent": '<div class="t_action"><a href="javascript:;" id="view" class="btn btn-block btn-info detail" title="详细信息" >详细</a></div>',
+                "render": function (data, type, row) { }
+            }]
+        });
+        $("#example1").anTable({
+            url: host + "/api/flowlist",
+            columns: [
+                        { "data": "ProcessId" },
+                        { "data": "Name" },
+                        { "data": "DisplayName" },
+                        { "data": "Version" },
+                        { "data": "State", className: "sdata_class", "render": function (data, type, row) {
+                            var state = data == true ? "checked=true" : "";
+                            return '<input type="checkbox" disabled="false" ' + state + '/>';
+                        }
+                        },
+                        { "data": "UploadUser" },
+                        { "data": "UploadTime" },
+                        { "data": "PublishUser" },
+                        { "data": "PublishTime" }
+                    ],
+            columnDefs: [{ "orderable": false, "targets": 9, className: "edit_class", "render": function (data, type, row) {
+                return '<div class="t_action"><a href="javascript:;" class="btn btn-block btn-info view" title="查看"><i class="fa fa-search"></i>&nbsp;查看流程</a><a href="javascript:;" class="btn btn-block btn-success detail" title="查看"><i class="fa fa-search"></i>&nbsp;查看实例</a></div>';
+            }
+            }],
+            done: function () {
+                $('#example1 tbody').on('click', 'a.view', function (e) {
+                    var row = $('#example1').DataTable().row($(this).parents('tr')).data();
+                    var flowurl = WFUrl + "?WorkflowProcessId=" + row.Id;
+                    window.open(flowurl, "_blank");
+                });
+                $('#example1 tbody').on('click', 'a.detail', function (e) {
+                    var row = $('#example1').DataTable().row($(this).parents('tr')).data();
+                    $.ajax({
+                        type: "GET",
+                        url: host + "/api/GetProcessInstancesList?ProcessId=" + row.ProcessId, //host + "/api/GetTaskInstancesList?ProcessInstanceId=3d75ff45e60048e280906617b8e57376",
+                        cache: false,
+                        async: true,
+                        dataType: "jsonp",
+                        jsonp: 'callback',
+                        success: function (data) {
+                            console.log(data);
+                            dt.clear();
+                            var osettings = dt.context[0];
+                            var api = osettings.oApi;
+                            if (data != null) {
+                                $.each(data, function (n, i) {
+                                    api._fnAddData(osettings, i);
+                                });
+                            }
+                            dt.draw();
+                            $('#example2 tbody').on('click', 'a.detail', function (e) {
+                                var row = $('#example2').DataTable().row($(this).parents('tr')).data();
+                                var detailurl = host + "/api/GetTaskInstancesList?ProcessInstanceId=" + row.Id;
+                                $.ajax({
+                                    type: "GET",
+                                    url: detailurl,
+                                    cache: false,
+                                    async: true,
+                                    dataType: "jsonp",
+                                    jsonp: 'callback',
+                                    success: function (data) {
+                                        console.log(data);
+                                    } 
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+
+    });
+</script>
