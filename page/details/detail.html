@@ -130,7 +130,8 @@ a.processPic {
   </body>
   <script type="text/javascript">
       TaskInstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
-      var host = "http://192.168.31.242:8084";
+      var host = "http://58.213.48.24:3001";
+      var host2="http://58.213.48.24:3002";
       $(function () {
           (function ($) {
               $.getUrlParam = function (name) {
@@ -145,10 +146,10 @@ a.processPic {
           var ProcessInstanceId = $.getUrlParam('ProcessInstanceId');
           var Version = $.getUrlParam('Version');
           var pageUrl = 'view/' + ProcessId + '.html?t=' + new Date().getTime();
-          var workItemUrl = host+"/wfapi/api/workItemdetail?workItemId=" + WorkItemId;
-          var traceUrl = host + "/wfapi/api/GetTaskInstancesList?ProcessInstanceId=" + ProcessInstanceId;
+          var workItemUrl = host+"/api/workItemdetail?workItemId=" + WorkItemId;
+          var traceUrl = host + "/api/GetTaskInstancesList?ProcessInstanceId=" + ProcessInstanceId;
           $('.processPic').on('click', function (e) {
-              var flowurl = host + "/wfui/WorkflowProcessView.aspx?ProcessId=" + ProcessId + "&Version=" + Version + "&ProcessInstanceId=" + ProcessInstanceId;
+              var flowurl = host2 + "/WorkflowProcessView.aspx?ProcessId=" + ProcessId + "&Version=" + Version + "&ProcessInstanceId=" + ProcessInstanceId;
               window.open(flowurl, "_blank");
           });
           //加载经办人信息

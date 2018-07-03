@@ -1,5 +1,5 @@
-var host = "http://192.168.31.242:8084/wfapi";
-var WFUrl = "http://192.168.31.242:8084/wfui/WorkflowProcessView.aspx";
+var host = "http://58.213.48.24:3001";
+var WFUrl = "http://58.213.48.24:3002/WorkflowProcessView.aspx";
 var InstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
 $(document).ready(function () {
     $("#mainHeadName,#mainHeadActive").text("创建任务");
