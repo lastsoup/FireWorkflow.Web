@@ -15,4 +15,11 @@ $(document).ready(function () {
         $("#mainHeadContent").text(title);
         x$('#maincontent').xhr('inner', './page/'+href+'.html?t=' + new Date().getTime());
     });
+
+    $.get("/Designer/LoanProcess.xml",function(data){
+        var father=$(data)[0].firstElementChild;
+        var dd=father.getElementsByTagName("fpdl:StartNode");
+        console.log($(dd).attr("Id"));
+        console.log(data);
+    });
 });
