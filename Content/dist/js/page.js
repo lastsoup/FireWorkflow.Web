@@ -22,4 +22,11 @@ $(document).ready(function () {
         console.log($(dd).attr("Id"));
         console.log(data);
     });
+
+     $.get("/Designer/Goods_Deliver_Process.xml",function(data){
+        var father=$(data)[0].firstElementChild;
+        var dd=father.getElementsByTagName("fpdl:StartNode");
+        console.log($(dd).attr("Id"));
+        console.log(data);
+    });
 });
