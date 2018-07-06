@@ -66,7 +66,7 @@ var g = new dagreD3.graphlib.Graph().setGraph({});
 // States and transitions from RFC 793
 var states = {
   CLOSED: {
-    description: "represents no connection state at all.",
+    //description: "represents no connection state at all.",
     style: "fill: #f77"
   },
 
@@ -182,8 +182,11 @@ var styleTooltip = function(name, description) {
 render(inner, g);
 
 inner.selectAll("g.node")
-  .attr("title", function(v) { return styleTooltip(v, g.node(v).description) })
-  .each(function(v) { $(this).tipsy({ gravity: "w", opacity: 1, html: true }); });
+  .attr("title", function(v) { 
+    return '34234324' 
+  }).each(function(v) { 
+    $(this).tipsy({ gravity: "w", opacity: 1, html: true }); 
+  });
 
 // Center the graph
 var initialScale = 0.75;

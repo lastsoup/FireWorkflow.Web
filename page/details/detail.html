@@ -122,7 +122,8 @@ a.processPic {
   <body>
   <div id="detail_info"></div>
   <div class="thumbnailFlow">
-    <a class="processPic" href="javascript:void(0)">流程图</a>
+    <a class="processPic"  id="btnslight" href="javascript:void(0)">流程图Sliverlight</a>
+     <a class="processPic" id="btnd3" href="javascript:void(0)">流程图D3</a>
 <!--  <span class="btn_gray btn_space">提交人：<font class="ycfont2">于飞飞</font></span><span class="arrow arrow-right"></span>
   <span class="btn_gray btn_space">材料部：<font class="ycfontorg">邵应京</font></span>-->
   </div>
@@ -131,7 +132,7 @@ a.processPic {
   <script type="text/javascript">
       TaskInstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
       var host = "https://58.213.48.24:3001";
-      var host2="https://58.213.48.24:3002";
+      var host2="http://58.213.48.24:3002";
       $(function () {
           (function ($) {
               $.getUrlParam = function (name) {
@@ -148,8 +149,13 @@ a.processPic {
           var pageUrl = 'view/' + ProcessId + '.html?t=' + new Date().getTime();
           var workItemUrl = host+"/api/workItemdetail?workItemId=" + WorkItemId;
           var traceUrl = host + "/api/GetTaskInstancesList?ProcessInstanceId=" + ProcessInstanceId;
-          $('.processPic').on('click', function (e) {
+          $('#btnslight').on('click', function (e) {
               var flowurl = host2 + "/WorkflowProcessView.aspx?ProcessId=" + ProcessId + "&Version=" + Version + "&ProcessInstanceId=" + ProcessInstanceId;
+              window.open(flowurl, "_blank");
+          });
+
+           $('#btnd3').on('click', function (e) {
+              var flowurl = '/Designer/d3.html';
               window.open(flowurl, "_blank");
           });
           //加载经办人信息
