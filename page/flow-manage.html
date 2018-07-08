@@ -83,10 +83,15 @@
                         { "data": "PublishTime" }
                     ],
             columnDefs: [{ "orderable": false, "targets": 9, className: "edit_class", "render": function (data, type, row) {
-                return '<div class="t_action"><a href="javascript:;" class="btn btn-block btn-info view" title="查看"><i class="fa fa-search"></i>&nbsp;查看流程</a><a href="javascript:;" class="btn btn-block btn-success detail" title="查看"><i class="fa fa-search"></i>&nbsp;查看实例</a></div>';
+                return '<div class="t_action"><a href="javascript:;" class="btn btn-block btn-danger viewD3" title="查看"><i class="fa fa-search"></i>&nbsp;查看D3流程</a><a href="javascript:;" class="btn btn-block btn-info view" title="查看"><i class="fa fa-search"></i>&nbsp;查看Slight流程</a><a href="javascript:;" class="btn btn-block btn-success detail" title="查看"><i class="fa fa-search"></i>&nbsp;查看实例</a></div>';
             }
             }],
             done: function () {
+                $('#example1 tbody').on('click', 'a.viewD3', function (e) {
+                    var row = $('#example1').DataTable().row($(this).parents('tr')).data();
+                    var flowurl = "d3.html?WorkflowProcessId=" + row.Id;
+                    window.open(flowurl, "_blank");
+                });
                 $('#example1 tbody').on('click', 'a.view', function (e) {
                     var row = $('#example1').DataTable().row($(this).parents('tr')).data();
                     var flowurl = WFUrl + "?WorkflowProcessId=" + row.Id;

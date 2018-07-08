@@ -131,7 +131,7 @@ a.processPic {
   </body>
   <script type="text/javascript">
       TaskInstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
-      var host = "https://58.213.48.24:3001";
+      var host = "http://10.211.55.11:8084/wfapi";//"https://58.213.48.24:3001";
       var host2="http://58.213.48.24:3002";
       $(function () {
           (function ($) {
@@ -155,7 +155,7 @@ a.processPic {
           });
 
            $('#btnd3').on('click', function (e) {
-              var flowurl = '../../d3.html';
+              var flowurl = "../../d3.html?ProcessId=" + ProcessId + "&Version=" + Version + "&ProcessInstanceId=" + ProcessInstanceId;
               window.open(flowurl, "_blank");
           });
           //加载经办人信息

@@ -1,4 +1,4 @@
-var host = "https://58.213.48.24:3001";
+var host = "http://10.211.55.11:8084/wfapi";//"https://58.213.48.24:3001";
 var WFUrl = "http://58.213.48.24:3002/WorkflowProcessView.aspx";
 var InstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
 $(document).ready(function () {

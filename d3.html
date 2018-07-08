@@ -76,9 +76,8 @@ var dagred3Story = function(svgelement) {
 dagred3Story.prototype.createProcess=function(data,sy)
 {
 	    var getId=function(tagName){
-	      var Node=father.getElementsByTagName(tagName);//("fpdl:StartNode");
+	      var Node=father.getElementsByTagName(tagName);
 	      var Id=$(Node).attr("Id");
-          //console.log(Id);
           return Id;
 	    }
         var father=$(data)[0].firstElementChild;
@@ -89,13 +88,18 @@ dagred3Story.prototype.createProcess=function(data,sy)
         FrameArry.push(StartNode);
         FrameArry.push(EndNode);
         //添加同步器
-        var syarry=[];
+        var syArry=[];
+        var Synchronizer=father.getElementsByTagName('fpdl:Synchronizer');
         if(sy){
-           var Synchronizer=father.getElementsByTagName('fpdl:Synchronizer');
-           $.each(Synchronizer,function(n,i) {
-               var Id=$(i).attr("Id");
-               syarry.push(["setSynchronizer",Id])
-               FrameArry.push(["setSynchronizer",Id]);
+            $.each(Synchronizer,function(n,i) {
+                var Id=$(i).attr("Id");
+                FrameArry.push(["setSynchronizer",Id]);
+            });
+        }else
+        {
+            $.each(Synchronizer,function(n,i) {
+                var Id=$(i).attr("Id");
+                syArry.push(["setSynchronizer",Id]);
             });
         }
         //添加任务
@@ -110,31 +114,129 @@ dagred3Story.prototype.createProcess=function(data,sy)
         });
         //添加流程
         var Transition=father.getElementsByTagName('fpdl:Transition');
-        var f,t;
-         $.each(Transition,function(n,i) {
-            var From=$(i).attr("From");
-            var To=$(i).attr("To");
-            var DisplayName=$(i).attr("DisplayName");
-            if(!sy) {
-                if (To.indexOf("Synchronizer") > -1) {
-                    f = From;
-                }
-                else if (From.indexOf("Synchronizer") > -1) {
-                    From = f;
-                    FrameArry.push(["AddDependencyEdge",From,To,DisplayName]);
+        if(!sy) {
+            var syStr=syArry.join(",");
+            var syObject=new Object();
+            var newTr = $.map(Transition, function (n) {
+                var To=$(n).attr("To");
+                var index=syStr.indexOf(To);
+                if(index<0) {
+                    return n;
                 }else
                 {
-                    FrameArry.push(["AddDependencyEdge",From,To,DisplayName]);
+                    var From = $(n).attr("From");
+                    syObject[To]=From;
                 }
-            }else {
+            });
+
+            $.each(newTr, function (n, i) {
+                var From = $(i).attr("From");
+                var f=syObject[From];
+                From =typeof(f)!="undefined"?f:From;
+                var To =$(i).attr("To");
+                var DisplayName = $(i).attr("DisplayName");
                 FrameArry.push(["AddDependencyEdge", From, To, DisplayName]);
-            }
-        });
+
+            });
+
+        }else {
+            $.each(Transition, function (n, i) {
+                var From = $(i).attr("From");
+                var To = $(i).attr("To");
+                var DisplayName = $(i).attr("DisplayName");
+                FrameArry.push(["AddDependencyEdge", From, To, DisplayName]);
+
+            });
+        }
         return FrameArry;
 }
 
-dagred3Story.prototype.initStory=function(Story){
-    var index = 0,name,obj=this;
+dagred3Story.prototype.createFlow=function(data,sy)
+{
+    var getId=function(tagName){
+        var Node=father.find(tagName)
+        var Id=$(Node).attr("Id");
+        return Id;
+    }
+    var father=$(data);
+    var FrameArry=new Array();
+    //添加开始/结束
+    var StartNode=["setRadiusNode",getId("StartNode"),"开始"];
+    var EndNode=["setRadiusNode",getId("EndNode"),"结束"];
+    FrameArry.push(StartNode);
+    FrameArry.push(EndNode);
+    //添加同步器
+    var syArry=[];
+    var Synchronizer=father.find('Synchronizer');
+    if(sy){
+        $.each(Synchronizer,function(n,i) {
+            var Id=$(i).attr("Id");
+            FrameArry.push(["setSynchronizer",Id]);
+        });
+    }else
+    {
+        $.each(Synchronizer,function(n,i) {
+            var Id=$(i).attr("Id");
+            syArry.push(["setSynchronizer",Id]);
+        });
+    }
+    //添加任务
+    var Activity=father.find('Activity');
+    $.each(Activity,function(n,i) {
+        var Id=$(i).attr("Id");
+        var DisplayName=$(i).attr("DisplayName");
+        var ext=$(this.getElementsByTagName("ExtendedAttribute"));
+        var name=$(ext[ext.length-1]).attr("Name");
+        var setFlag=name=="decision"?"setMilestone":"setActivity";
+        FrameArry.push([setFlag,Id,DisplayName]);
+    });
+    //添加流程
+    var Transition=father.find('Transition');
+    if(!sy) {
+        var syStr=syArry.join(",");
+        var syObject=new Object();
+        var newTr = $.map(Transition, function (n) {
+            var To=$(n).attr("To");
+            var index=syStr.indexOf(To);
+            if(index<0) {
+                return n;
+            }else
+            {
+                var From = $(n).attr("From");
+                syObject[To]=From;
+            }
+        });
+
+        $.each(newTr, function (n, i) {
+            var From = $(i).attr("From");
+            var f=syObject[From];
+            From =typeof(f)!="undefined"?f:From;
+            var To =$(i).attr("To");
+            var DisplayName = $(i).attr("DisplayName");
+            FrameArry.push(["AddDependencyEdge", From, To, DisplayName]);
+
+        });
+
+    }else {
+        $.each(Transition, function (n, i) {
+            var From = $(i).attr("From");
+            var To = $(i).attr("To");
+            var DisplayName = $(i).attr("DisplayName");
+            FrameArry.push(["AddDependencyEdge", From, To, DisplayName]);
+
+        });
+    }
+    return FrameArry;
+}
+
+$.getUrlParam = function (name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
+dagred3Story.prototype.initStory=function(){
+    var index = 1,name,obj=this;
     switch(index)
     {
     	case 0:
@@ -144,15 +246,35 @@ dagred3Story.prototype.initStory=function(Story){
     	name="Goods_Deliver_Process"
     	break;
     }
-    $.get("Designer/"+name+".xml",function(data){
+    var id=$.getUrlParam("WorkflowProcessId");
+    if(!id)
+    {
+        var ProcessId=$.getUrlParam("ProcessId");
+        var Version=$.getUrlParam("Version");
+        $.getJSON("http://10.211.55.11:8084/wfapi/api/GetFlowItemByProcessIdAndVersion?ProcessId="+ProcessId+"&Version="+Version+"&callback=?", function(data){
+            data=data.ProcessContent.replace(/fpdl:/g,"");
+            console.log(data);
+            var frame=obj.createFlow(data,false);
+            obj.initFrame(frame);
+
+        });
+    }else {
+        $.getJSON("http://10.211.55.11:8084/wfapi/api/GetFlowItem?flowItemId=" + id + "&callback=?", function (data) {
+            data = data.ProcessContent.replace(/fpdl:/g, "");
+            console.log(data);
+            var frame = obj.createFlow(data, false);
+            obj.initFrame(frame);
+
+        });
+    }
+   /* $.get("Designer/"+name+".xml",function(data){
         console.log(data);
         var frame=obj.createProcess(data,false);
-        obj.initFrame1(frame);
-    });
-   //this.initFrame(Story[index]);
+        obj.initFrame(frame);
+    });*/
 }
 
-dagred3Story.prototype.initFrame1 = function(Frame) {
+dagred3Story.prototype.initFrame = function(Frame) {
 		Frame.forEach(function(x) {
 			switch(x[0]) {
 				case 'removeNode':
@@ -173,7 +295,7 @@ dagred3Story.prototype.initFrame1 = function(Frame) {
 				case 'AddCoherenceEdge':
 					this.g.setEdge(x[1], x[2], {
 						curve: d3.curveBasis
-						,arrowheadStyle: "fill: #333" 
+						,arrowheadStyle: "fill: #333"
 					});
 					break;
 				case 'AddDependencyEdge':
@@ -188,7 +310,7 @@ dagred3Story.prototype.initFrame1 = function(Frame) {
 					console.log ("Schedule Network element "+x+" is not implemented")
 				}
 		}.bind(this))
-		
+
 		if (this.g) {
 			this.dagreD3render(this.inner,this.g);
 			var inner=this.inner;
@@ -197,8 +319,8 @@ dagred3Story.prototype.initFrame1 = function(Frame) {
             this.svg.call(zoom);
 			//悬浮提示框
 			this.inner.selectAll("g.node").attr("title", function(v) { return '34234324' }).each(
-				function(v) { 
-					$(this).tipsy({ gravity: "w", opacity: 1, html: true }); 
+				function(v) {
+					$(this).tipsy({ gravity: "w", opacity: 1, html: true });
 				});
 			//居中
 			var initialScale = 1;
@@ -207,56 +329,6 @@ dagred3Story.prototype.initFrame1 = function(Frame) {
 		}
 };
 
-dagred3Story.prototype.initFrame = function(Frame) {
-		Frame.forEach(function(x) {
-			switch(x[0]) {
-				case 'setActivity':
-					this.g.setNode(x[1],{})
-					break;
-				case 'setRadiusNode':
-					this.g.setNode(x[1],{rx:10,ry:10,shape: 'rect',style: "fill: #fff; stroke: #000;" });
-				    break;
-				case 'setMilestone':
-					this.g.setNode(x[1],{label:x[1],shape: 'diamond', style: "fill: #fff; stroke: #000" })
-					break;
-				case 'AddCoherenceEdge':
-					this.g.setEdge(x[1], x[2], {
-						curve: d3.curveBasis
-						,arrowheadStyle: "fill: #333" 
-					});
-					break;
-				case 'AddDependencyEdge':
-					this.g.setEdge(x[1], x[2], {
-						curve: d3.curveBasis
-						,label: x[3]
-						,labeloffset: 5
-						,labelpos: 'l'
-					});
-					break;
-				default:
-					console.log ("Schedule Network element "+x+" is not implemented")
-				}
-		}.bind(this))
-		
-		if (this.g) {
-			this.dagreD3render(this.inner,this.g);
-			var inner=this.inner;
-			//缩放
-            var zoom = d3.zoom().on("zoom", function() {inner.attr("transform", d3.event.transform);});
-            this.svg.call(zoom);
-			//悬浮提示框
-			this.inner.selectAll("g.node").attr("title", function(v) { 
-				return '34234324';
-			}).each(
-				function(v) { 
-					$(this).tipsy({ gravity: "w", opacity: 1, html: true }); 
-				});
-			//居中
-			var initialScale = 1;
-            this.svg.call(zoom.transform, d3.zoomIdentity.translate((this.svg.attr("width") - this.g.graph().width * initialScale) / 2, 20).scale(initialScale));
-            this.svg.attr('height', this.g.graph().height * initialScale + 40);
-		}
-};
 
 </script>
 
@@ -265,67 +337,8 @@ dagred3Story.prototype.initFrame = function(Frame) {
 </div>
 
 <script id="js">
-var framedelay = 2000;
 var schedulestory = new dagred3Story("#schedule");
-schedulestory.initStory(
-	[
-	   [
-	     ["setRadiusNode", "开始"]
-		 , 
-		 ["setRadiusNode", "结束"]
-		 ,
-		 ["setMilestone", "风险检查"]
-		 ,
-		 ["setMilestone", "审批"]
-		 ,
-		 ["setActivity", "提交申请"]
-		 ,
-		 ["setActivity", "拒绝"]
-		 ,
-		 ["setActivity", "放贷"]
-		 ,
-		 ["AddCoherenceEdge", "开始", "提交申请"]
-		 ,
-		 ["AddCoherenceEdge", "提交申请", "风险检查"]
-		 ,
-		 ["AddCoherenceEdge", "拒绝", "结束"]
-		 ,
-		 ["AddCoherenceEdge", "放贷", "结束"]
-		  ,
-		 ["AddDependencyEdge", "风险检查", "审批","通过"],
-		 ,
-		 ["AddDependencyEdge", "风险检查", "拒绝","拒绝"]
-		  ,
-		 ["AddDependencyEdge", "审批", "拒绝","拒绝"],
-		 ,
-		 ["AddDependencyEdge", "审批", "放贷","通过"]
-	   ],
-	    [
-	     ["setRadiusNode", "开始"]
-		 , 
-		 ["setRadiusNode", "结束"]
-		 ,
-		 ["setActivity", "客户付款"]
-		 ,
-		 ["setActivity", "仓库备货"]
-		 ,
-		 ["setActivity", "送货员送货"]
-		 ,
-		 ["setActivity", "发手机短信通知客户收货"]
-		 ,
-		 ["AddCoherenceEdge", "开始", "客户付款"]
-		 ,
-		 ["AddCoherenceEdge", "客户付款", "仓库备货"]
-		 ,
-		 ["AddCoherenceEdge", "仓库备货", "送货员送货"]
-		  ,
-		 ["AddCoherenceEdge", "仓库备货", "发手机短信通知客户收货"]
-		 ,
-		 ["AddCoherenceEdge", "送货员送货", "结束"]
-		 ,
-		 ["AddCoherenceEdge", "发手机短信通知客户收货", "结束"]
-	   ]
-	]);
+schedulestory.initStory();
 </script>
 </body>
 </html>
