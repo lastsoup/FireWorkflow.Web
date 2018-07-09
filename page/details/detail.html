@@ -5,7 +5,9 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
      <script src="../../Content/plugins/jQuery/jQuery-2.1.4.min.js" type="text/javascript"></script>
      <script src="../../Content/plugins/xui/xui-2.3.2.js"  type="text/javascript"></script>
-     <script src="../../Content/plugins/xui/xui-2.3.2.js"  type="text/javascript"></script>
+     <script src="https://d3js.org/d3.v4.js"></script>
+     <script src="../../Content/d3/dagre-d3.js"></script>
+     <script src="../../Content/d3/page-d3.js"></script>
      <style  type="text/css">
     body
     {
@@ -117,6 +119,24 @@ a.processPic {
     -moz-border-radius: 1px;
     border-radius: 3px;
 }
+
+.node rect {
+  stroke: #333;
+  fill: #fff;
+  stroke-width: 1.5px;
+}
+
+.node polygon {
+  stroke: #333;
+  fill: #fff;
+  stroke-width: 1.5px;
+}
+
+.edgePath path.path {
+  stroke: #333;
+  fill: none;
+  stroke-width: 1.5px;
+}
      </style>
   </head>
   <body>
@@ -126,6 +146,7 @@ a.processPic {
      <a class="processPic" id="btnd3" href="javascript:void(0)">流程图D3</a>
 <!--  <span class="btn_gray btn_space">提交人：<font class="ycfont2">于飞飞</font></span><span class="arrow arrow-right"></span>
   <span class="btn_gray btn_space">材料部：<font class="ycfontorg">邵应京</font></span>-->
+  <svg id="schedule" width=1000 style="border: 1px solid #000;"></svg>
   </div>
 
   </body>
@@ -170,6 +191,8 @@ a.processPic {
               success: function (data) {
                   console.log(data);
                   var count = data.length;
+                  var schedulestory = new dagred3Story("#schedule");
+                  schedulestory.initWebFrame(data);
                   $.each(data, function (n, item) {
                       var actorid = typeof (item.workitems[0]) == "undefined" ? "无" : item.workitems[0].ActorId;
                       var stateClass = item.State == TaskInstanceStateEnum[1] ? "running" : "completed";
@@ -179,7 +202,7 @@ a.processPic {
                       if ((n + 1) != count) {
                           $(".thumbnailFlow").append(arrow);
                       }
-                  });
+                  });  
               }
           });
           var _bindDetail = function (responseText) {
