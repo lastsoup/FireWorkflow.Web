@@ -217,24 +217,55 @@ dagred3Story.prototype.initFlow=function(){
     });*/
 }
 
+function setSVG(svg_label,text,style){
+    tspan = document.createElementNS('http://www.w3.org/2000/svg','tspan');
+    tspan.textContent = text;
+    $.extend(true, tspan.style, style);
+    svg_label.appendChild(tspan);
+    return svg_label;
+}
+
 dagred3Story.prototype.initWebFrame = function(Frame) {
  var g=this.g;  
  this.g.graph().ranksep = 30;
  this.g.graph().nodesep = 30;
- var From=null;
+ var framobj=new Object();
  Frame.forEach(function(x) {
-    var workitems = typeof (x.workitems[0]) == "undefined" ? [{ActorId:"无",Id:"none"}]: x.workitems;
-    workitems.forEach(function(i) {
-         g.setNode(i.Id,{label:x.DisplayName+": "+i.ActorId});
-         if(From){
-            From.forEach(function(f){
-                g.setEdge(f.Id, i.Id, {});
+    var step=x.StepNumber+"_s";
+    var newx=typeof (framobj[step]) == "undefined" ?(new Array()):(framobj[step]);
+    newx.push(x);
+    framobj[step]=newx;
+ });
+  var From=null;
+  for(var name in framobj){
+     var item=framobj[name];
+     item.forEach(function(x){
+        var workitems = typeof (x.workitems[0]) == "undefined" ? [{ActorId:"无",Id:"none"}]: x.workitems;
+        var ActorId="";
+        var table = document.createElement("table");
+        workitems.forEach(function(i) {
+            ActorId=ActorId+" "+i.ActorId;
+        });
+        var svg_label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        svg_label.setAttribute('dy', '1em');
+        svg_label.setAttribute('x', '1');
+        setSVG(svg_label,x.DisplayName+": ",null);
+        var statefill = x.State == TaskInstanceStateEnum[1] ? "#F18308" : "#878787";
+        var label=setSVG(svg_label,ActorId,{fill:statefill,fontWeight:"bold"});
+        g.setNode(x.Id,{rx:5,ry:5,label: label, labelType: 'svg'});
+        //g.setNode(x.Id,{rx:5,ry:5,label:x.DisplayName+": "+ActorId});
+        if(From){
+           From.forEach(function(f){
+                g.setEdge(f.Id, x.Id, {arrowheadStyle: "fill: #333"});
             })
-         }
-    });
-    From=workitems;
- })
+        }
+     });
+     From=item;
+  }
  this.dagreD3render(this.inner,this.g);
+ var initialScale = 1;
+ this.svg.attr('width', this.g.graph().width * initialScale);
+ this.svg.attr('height', this.g.graph().height * initialScale);
 }
 //加载设置节点操作
 dagred3Story.prototype.initFrame = function(Frame) {
