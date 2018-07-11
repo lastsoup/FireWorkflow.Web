@@ -308,7 +308,7 @@ dagred3Story.prototype.initFrame = function(Frame) {
                     var xlable=setLable(x[3]);
                     this.g.setEdge(x[1], x[2], {
                         label:x[3]
-                        //,curve: d3.curveBasis
+                        ,curve: d3.curveBasis
                         ,labeloffset:10
                         ,arrowheadStyle: "fill: #89bcde"
                         ,labelpos: 'c'
@@ -334,7 +334,23 @@ dagred3Story.prototype.initFrame = function(Frame) {
                 });
             //居中
             var initialScale = 1;
-            this.svg.call(zoom.transform, d3.zoomIdentity.translate((this.svg.attr("width") - this.g.graph().width * initialScale) / 2, 20).scale(initialScale));
-            this.svg.attr('height', this.g.graph().height * initialScale + 40);
+            var w=500,h=500;
+            var svg=this.svg;
+            var setSize=function(){
+              svg._groups.forEach(function(x) {
+              w=$(x).parent().width();
+              h=$(x).parent().height();
+            });
+              svg.attr('width', w);
+              svg.attr('height', h);
+            }
+            $(window).resize(function() {
+                setSize();
+            });
+            setSize();
+            var x=(w - this.g.graph().width * initialScale) / 2;
+            var y=(h- this.g.graph().height * initialScale) / 2;
+            this.svg.call(zoom.transform, d3.zoomIdentity.translate(x,y>100?100:y).scale(initialScale));
+
         }
 };
