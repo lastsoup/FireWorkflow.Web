@@ -23,42 +23,34 @@ text {
 }
 
 .node rect {
-  stroke: #333;
+  fill:#3E7E9C;
+}
+
+.node .label tspan{
   fill: #fff;
-  stroke-width: 1.5px;
 }
 
 .node polygon {
-  stroke: #333;
-  fill: #fff;
-  stroke-width: 1.5px;
+  fill:#3E7E9C;
 }
 
 .edgePath path.path {
-  stroke: #333;
+  stroke: #89bcde;
   fill: none;
   stroke-width: 1.5px;
 }
 
-div#top-frame {
-  height: 350px;
-}
+.edgeLabel foreignObject div{
+    background: #fff;
+    padding: 0 5px;
+    font-size:15px;
+} 
 
-div#WBS-frame {
-  float: left;
-  width: 50%;
-}
-
-div#dependencies-frame {
-  float: left;
-  width: 50%;
-}
-
-div#schedule-frame {
-  float: none;
+.edgeLabel .label rect{
+  fill: #fff;
 }
 </style>
-<svg id="schedule" width=1000 style="border: 1px solid #000;"></svg>
+<svg id="schedule" width=1000 ></svg>
 <script id="js">
 var schedulestory = new dagred3Story("#schedule");
 schedulestory.initFlow();

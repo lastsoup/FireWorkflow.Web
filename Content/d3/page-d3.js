@@ -4,8 +4,8 @@ var dagred3Story = function(svgelement) {
     this.g.graph().marginx = 10;
     this.g.graph().marginy = 10;
     this.g.graph().rankdir = "LR";
-    this.g.graph().ranksep = 20;
-    this.g.graph().nodesep = 20;
+    this.g.graph().ranksep = 30;
+    this.g.graph().nodesep = 30;
     this.svg = d3.select(svgelement);
     this.inner = this.svg.append("g");
     this.dagreD3render = new dagreD3.render();
@@ -218,7 +218,7 @@ dagred3Story.prototype.initFlow=function(){
 }
 
 function setSVG(svg_label,text,style){
-    tspan = document.createElementNS('http://www.w3.org/2000/svg','tspan');
+    var tspan = document.createElementNS('http://www.w3.org/2000/svg','tspan');
     tspan.textContent = text;
     $.extend(true, tspan.style, style);
     svg_label.appendChild(tspan);
@@ -267,8 +267,19 @@ dagred3Story.prototype.initWebFrame = function(Frame) {
  this.svg.attr('width', this.g.graph().width * initialScale);
  this.svg.attr('height', this.g.graph().height * initialScale);
 }
+
+var setLable=function(text){
+    var svg_label = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    svg_label.textContent = text;
+    return svg_label;
+}
+
 //加载设置节点操作
 dagred3Story.prototype.initFrame = function(Frame) {
+        this.g.graph().ranksep = 50;
+        this.g.graph().nodesep = 20;
+        //this.g.graph().rankdir = "RL";
+       
         Frame.forEach(function(x) {
             switch(x[0]) {
                 case 'removeNode':
@@ -278,7 +289,7 @@ dagred3Story.prototype.initFrame = function(Frame) {
                     this.g.setNode(x[1],{label:x[2]})
                     break;
                 case 'setRadiusNode':
-                    this.g.setNode(x[1],{label:x[2],rx:10,ry:10,shape: 'rect',style: "fill: #fff; stroke: #000;" });
+                    this.g.setNode(x[1],{label:x[2],rx:10,ry:10,shape: 'rect'});
                     break;
                 case 'setMilestone':
                     this.g.setNode(x[1],{label:x[2],shape: 'diamond', style: "fill: #fff; stroke: #000" })
@@ -289,17 +300,21 @@ dagred3Story.prototype.initFrame = function(Frame) {
                 case 'AddCoherenceEdge':
                     this.g.setEdge(x[1], x[2], {
                         curve: d3.curveBasis
-                        ,arrowheadStyle: "fill: #333"
+                        ,arrowheadStyle: "fill: #89bcde"
                     });
                     break;
                 case 'AddDependencyEdge':
+                {
+                    var xlable=setLable(x[3]);
                     this.g.setEdge(x[1], x[2], {
-                        curve: d3.curveBasis
-                        ,label: x[3]
-                        ,labeloffset: 5
-                        ,arrowheadStyle: "fill: #333"
-                        ,labelpos: 'l'
+                        label:x[3]
+                        //,curve: d3.curveBasis
+                        ,labeloffset:10
+                        ,arrowheadStyle: "fill: #89bcde"
+                        ,labelpos: 'c'
+                        ,arrowhead: 'vee'
                     });
+                }
                     break;
                 default:
                     console.log ("Schedule Network element "+x+" is not implemented")

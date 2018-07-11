@@ -760,6 +760,11 @@ module.exports = addTextLabel;
  * Attaches a text label to the specified root. Handles escape sequences.
  */
 function addTextLabel(root, node) {
+  //by-cqy
+  if(node.labelpos=="c"&&node.label!="")
+  {
+    var rect=root.append("rect");
+  }
   var domNode = root.append("text");
 
   var lines = processEscapeSequences(node.label).split("\n");
@@ -771,9 +776,17 @@ function addTextLabel(root, node) {
         .attr("x", "1")
         .text(lines[i]);
   }
-
+   
   util.applyStyle(domNode, node.labelStyle);
-
+  //by-cqy
+  if(node.labelpos=="c"&&node.label!="")
+  {
+    var dom=domNode.node().getBBox();
+    var w=dom.width+node.labeloffset,h=dom.height+node.labeloffset;
+    rect.attr("width",w);
+    rect.attr("height",h);
+    domNode.attr("transform","translate(" + (node.labeloffset / 2) + "," +(node.labeloffset / 2) + ")");
+  }
   return domNode;
 }
 
