@@ -128,6 +128,20 @@ dagred3Story.prototype.createFlow=function(data,sy)
         var ext=$(this.getElementsByTagName("ExtendedAttribute"));
         var name=$(ext[ext.length-1]).attr("Name");
         var setFlag=name=="decision"?"setMilestone":"setActivity";
+        //添加任务
+        var tasks=[];
+        $(i).find("Task").each(function(){
+            var DisplayName=$(this).attr("DisplayName");
+            var task={"DisplayName":DisplayName};
+            tasks.push(task);
+        });
+         $(i).find("TaskRef").each(function(){
+            var Reference=$(this).attr("Reference");
+            var DisplayName=father.find("[Id='"+Reference+"']").attr("DisplayName");
+            var task={"DisplayName":DisplayName};
+            tasks.push(task);
+        });
+        FrameArry.push(["setTip",Id,tasks]);
         FrameArry.push([setFlag,Id,DisplayName]);
     });
     //添加流程
@@ -179,8 +193,8 @@ $.getUrlParam = function (name) {
 //var host = "http://10.211.55.11:8084/wfapi";
 var host = "https://58.213.48.24:3001";
 dagred3Story.prototype.initFlow=function(){
-    var index = 1,name,obj=this;
-    switch(index)
+    var index = 0,name,obj=this;
+   /* switch(index)
     {
         case 0:
         name="LoanProcess"
@@ -189,6 +203,12 @@ dagred3Story.prototype.initFlow=function(){
         name="Goods_Deliver_Process"
         break;
     }
+     $.get("Designer/"+name+".xml",function(data){
+        console.log(data);
+        var frame=obj.createProcess(data,false);
+        obj.initFrame(frame);
+    });*/
+
     var id=$.getUrlParam("WorkflowProcessId");
     if(!id)
     {
@@ -210,11 +230,7 @@ dagred3Story.prototype.initFlow=function(){
 
         });
     }
-   /* $.get("Designer/"+name+".xml",function(data){
-        console.log(data);
-        var frame=obj.createProcess(data,false);
-        obj.initFrame(frame);
-    });*/
+   
 }
 
 function setSVG(svg_label,text,style){
@@ -286,16 +302,16 @@ dagred3Story.prototype.initFrame = function(Frame) {
                     this.g.removeNode(x[1])
                     break;
                 case 'setActivity':
-                    this.g.setNode(x[1],{label:x[2]})
+                    this.g.setNode(x[1],{label:x[2]});
                     break;
                 case 'setRadiusNode':
                     this.g.setNode(x[1],{label:x[2],rx:10,ry:10,shape: 'rect'});
                     break;
                 case 'setMilestone':
-                    this.g.setNode(x[1],{label:x[2],shape: 'diamond', style: "fill: #fff; stroke: #000" })
+                    this.g.setNode(x[1],{label:x[2],shape: 'diamond'})
                     break;
                 case 'setSynchronizer':
-                    this.g.setNode(x[1],{label:'S',shape: 'circle', style: "fill: #fff; stroke: #000" })
+                    this.g.setNode(x[1],{label:'S',shape: 'circle',padding:5})
                     break;
                 case 'AddCoherenceEdge':
                     this.g.setEdge(x[1], x[2], {
@@ -314,8 +330,13 @@ dagred3Story.prototype.initFrame = function(Frame) {
                         ,labelpos: 'c'
                         ,arrowhead: 'vee'
                     });
-                }
                     break;
+                }
+                case 'setTip':
+                {
+                    
+                    break;
+                }
                 default:
                     console.log ("Schedule Network element "+x+" is not implemented")
                 }
@@ -327,8 +348,8 @@ dagred3Story.prototype.initFrame = function(Frame) {
             //缩放
             var zoom = d3.zoom().on("zoom", function() {inner.attr("transform", d3.event.transform);});
             this.svg.call(zoom);
-            //悬浮提示框
-            this.inner.selectAll("g.node").attr("title", function(v) { return '34234324' }).each(
+            //悬浮提示框this.inner.selectAll("g.node")
+            this.inner.selectAll("LoanProcess.Submit_application_activity").attr("title", function(v) { return '<p>34234324</p>' }).each(
                 function(v) {
                     $(this).tipsy({ gravity: "w", opacity: 1, html: true });
                 });

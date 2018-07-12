@@ -29,7 +29,7 @@ text {
   font-size: 14px;
 }
 
-.node rect {
+.node rect,.node circle,.node polygon {
   fill:#3E7E9C;
 }
 
@@ -37,8 +37,8 @@ text {
   fill: #fff;
 }
 
-.node polygon {
-  fill:#3E7E9C;
+.edgeLabel .label rect{
+  fill: #fff;
 }
 
 .edgePath path.path {
@@ -47,15 +47,7 @@ text {
   stroke-width: 1.5px;
 }
 
-.edgeLabel foreignObject div{
-    background: #fff;
-    padding: 0 5px;
-    font-size:15px;
-} 
 
-.edgeLabel .label rect{
-  fill: #fff;
-}
 </style>
 <svg id="schedule"></svg>
 <script id="js">
