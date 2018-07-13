@@ -2,53 +2,25 @@
 
 <meta charset="utf-8">
 <title>工作流程图</title>
-
+<head>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="Content/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script src="Content/d3/dagre-d3.js"></script>
 <link rel="stylesheet" href="Content/d3/tipsy.css">
 <script src="Content/d3/tipsy.js"></script>
 <script src="Content/d3/page-d3.js"></script>
-<style id="css">
-html,body{
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-}
-h1 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
-  margin-top: 0.8em;
-  margin-bottom: 0.2em;
-}
-
-text {
-  font-weight: 300;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
-  font-size: 14px;
-}
-
-.node rect,.node circle,.node polygon {
-  fill:#3E7E9C;
-}
-
-.node .label tspan{
-  fill: #fff;
-}
-
-.edgeLabel .label rect{
-  fill: #fff;
-}
-
-.edgePath path.path {
-  stroke: #89bcde;
-  fill: none;
-  stroke-width: 1.5px;
-}
-
-
-</style>
+</head>
+<body>
+<div class="viewtitle">
+<span class="title">循环结构流程图</span>
+<div class="chart-tags">
+<span class="icons"></span>
+<a class="chart-tag">流程图</a>
+<a class="chart-tag">循环结构</a>
+</div>
+<div class="chart-des">减少源程序重复书写的工作量，用来描述重复执行某段算法的问题</div>
+<span class="icons down"></span>
+</div>
 <svg id="schedule"></svg>
 <script id="js">
 var schedulestory = new dagred3Story("#schedule");

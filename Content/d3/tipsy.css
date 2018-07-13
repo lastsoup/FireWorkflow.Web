@@ -1,9 +1,144 @@
-.tipsy { font-size: 10px; position: absolute; padding: 5px; z-index: 100000; }
-  .tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding: 5px 8px 4px 8px; text-align: center; }
+html,body{
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+h1 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  margin-top: 0.8em;
+  margin-bottom: 0.2em;
+}
+
+text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 14px;
+}
+
+.node rect,.node circle,.node polygon {
+  fill:#3E7E9C;
+}
+
+.node .label tspan{
+  fill: #fff;
+}
+
+.edgeLabel .label rect{
+  fill: #fff;
+}
+
+.edgePath path.path {
+  stroke: #89bcde;
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+.viewtitle {
+    position: fixed;
+    min-height: 20px;
+    line-height: 20px;
+    background: #fff;
+    left: 10px;
+    top: 10px;
+    z-index: 9;
+    padding: 6px 25px 6px 10px;
+    box-shadow: 0 0 3px #ccc;
+    font-size: 14px;
+    border-radius: 3px;
+    max-width: 400px;
+}
+
+.viewtitle .title {
+    font-size: 16px;
+    font-weight: 700;
+    display: inline-block;
+    margin-left: 8px;
+    margin-right: 10px;
+}
+
+.chart-tags .icons {
+    font-size: 12px;
+    color: #aaa;
+    vertical-align: -1px;
+}
+
+.chart-tags {
+    margin-left: 34px;
+    margin-top: 3px;
+}
+
+.chart-tag {
+    font-size: 12px;
+    color: #888;
+    display: inline-block;
+    margin-right: 6px;
+    margin-left: 2px;
+}
+
+.chart-des {
+    font-size: 12px;
+    margin: 3px 0 5px 34px;
+    display: none;
+    word-break: break-word;
+}
+
+.viewtitle .down {
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+}
+
+.controlls {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 46px;
+    z-index: 1;
+    height: 100%;
+    background: #fff;
+    text-align: center;
+    box-shadow: -1px -1px 1px #ddd;
+}
+
+.controlls .item {
+    margin-bottom: 8px;
+    color: #4d4d4d;
+    background-color: #fff;
+    width: 30px;
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 4px;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.controlls .ico_box {
+    padding: 7px;
+    background: #fff;
+}
+
+.controlls .item-count {
+    text-align: center;
+    font-size: 12px;
+    transform: scale(.9);
+    color: #888;
+    margin-top: -8px;
+}
+
+.tipsy { font-size: 13px; position: absolute; padding: 5px; z-index: 100000; }
+  .tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding:10px; text-align: center; }
 
   /* Rounded corners */
   .tipsy-inner { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
-  
+   .tipsy-inner p{margin: 0;font-weight:bold;}
   /* Uncomment for shadow */
   .tipsy-inner { box-shadow: 0 0 5px #000000; -webkit-box-shadow: 0 0 5px #000000; -moz-box-shadow: 0 0 5px #000000; }
   

@@ -100,6 +100,7 @@ dagred3Story.prototype.createFlow=function(data,sy)
     }
     var father=$(data);
     var FrameArry=new Array();
+    var TaskObject=new Object();
     //添加开始/结束
     var StartNode=["setRadiusNode",getId("StartNode"),"开始"];
     var EndNode=["setRadiusNode",getId("EndNode"),"结束"];
@@ -133,15 +134,18 @@ dagred3Story.prototype.createFlow=function(data,sy)
         $(i).find("Task").each(function(){
             var DisplayName=$(this).attr("DisplayName");
             var task={"DisplayName":DisplayName};
-            tasks.push(task);
+            //tasks.push(task);
+            TaskObject[Id]=task;
         });
          $(i).find("TaskRef").each(function(){
             var Reference=$(this).attr("Reference");
             var DisplayName=father.find("[Id='"+Reference+"']").attr("DisplayName");
             var task={"DisplayName":DisplayName};
-            tasks.push(task);
+            //tasks.push(task);
+            TaskObject[Id]=task;
         });
-        FrameArry.push(["setTip",Id,tasks]);
+        //FrameArry.push(["setTip",Id,tasks]);
+        TaskObject
         FrameArry.push([setFlag,Id,DisplayName]);
     });
     //添加流程
@@ -180,7 +184,7 @@ dagred3Story.prototype.createFlow=function(data,sy)
 
         });
     }
-    return FrameArry;
+    return {"Frame":FrameArry,"Task":TaskObject};
 }
 
 //获取地址参数
@@ -291,12 +295,11 @@ var setLable=function(text){
 }
 
 //加载设置节点操作
-dagred3Story.prototype.initFrame = function(Frame) {
+dagred3Story.prototype.initFrame = function(f) {
         this.g.graph().ranksep = 50;
         this.g.graph().nodesep = 20;
         //this.g.graph().rankdir = "RL";
-       
-        Frame.forEach(function(x) {
+        f.Frame.forEach(function(x) {
             switch(x[0]) {
                 case 'removeNode':
                     this.g.removeNode(x[1])
@@ -348,10 +351,17 @@ dagred3Story.prototype.initFrame = function(Frame) {
             //缩放
             var zoom = d3.zoom().on("zoom", function() {inner.attr("transform", d3.event.transform);});
             this.svg.call(zoom);
-            //悬浮提示框this.inner.selectAll("g.node")
-            this.inner.selectAll("LoanProcess.Submit_application_activity").attr("title", function(v) { return '<p>34234324</p>' }).each(
-                function(v) {
+            //悬浮提示框
+            this.inner.selectAll("g.node").attr("title", function(v) { 
+                var task=f.Task[v];
+                if(task){
+                   var dom='<p>任务名：'+task.DisplayName+'</p>';
+                   return dom;
+                }
+            }).each(function(v) {
+                   if(f.Task[v]){
                     $(this).tipsy({ gravity: "w", opacity: 1, html: true });
+                   }
                 });
             //居中
             var initialScale = 1;
@@ -365,13 +375,13 @@ dagred3Story.prototype.initFrame = function(Frame) {
               svg.attr('width', w);
               svg.attr('height', h);
             }
-            $(window).resize(function() {
+            /*$(window).resize(function() {
                 setSize();
-            });
+            });*/
             setSize();
             var x=(w - this.g.graph().width * initialScale) / 2;
             var y=(h- this.g.graph().height * initialScale) / 2;
-            this.svg.call(zoom.transform, d3.zoomIdentity.translate(x,y>100?100:y).scale(initialScale));
+            this.svg.call(zoom.transform, d3.zoomIdentity.translate(x,y).scale(initialScale));
 
         }
 };
