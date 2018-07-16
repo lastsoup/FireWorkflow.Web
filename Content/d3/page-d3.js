@@ -375,9 +375,9 @@ dagred3Story.prototype.initFrame = function(f) {
               svg.attr('width', w);
               svg.attr('height', h);
             }
-            /*$(window).resize(function() {
+            $(window).resize(function() {
                 setSize();
-            });*/
+            });
             setSize();
             var x=(w - this.g.graph().width * initialScale) / 2;
             var y=(h- this.g.graph().height * initialScale) / 2;
