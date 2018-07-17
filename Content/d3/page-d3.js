@@ -91,6 +91,7 @@ dagred3Story.prototype.createProcess=function(data,sy)
 }
 
 //创建数据库获取的流程
+//sy是同步器
 dagred3Story.prototype.createFlow=function(data,sy)
 {
     var getId=function(tagName){
@@ -196,6 +197,7 @@ $.getUrlParam = function (name) {
 
 //var host = "http://10.211.55.11:8084/wfapi";
 var host = "https://58.213.48.24:3001";
+var ProcessInstanceId;
 dagred3Story.prototype.initFlow=function(){
     var index = 0,name,obj=this;
    /* switch(index)
@@ -213,8 +215,9 @@ dagred3Story.prototype.initFlow=function(){
         obj.initFrame(frame);
     });*/
 
-    var id=$.getUrlParam("WorkflowProcessId");
-    if(!id)
+    var WorkflowProcessId=$.getUrlParam("WorkflowProcessId");
+    ProcessInstanceId=$.getUrlParam("ProcessInstanceId");
+    if(!WorkflowProcessId)
     {
         var ProcessId=$.getUrlParam("ProcessId");
         var Version=$.getUrlParam("Version");
@@ -223,10 +226,9 @@ dagred3Story.prototype.initFlow=function(){
             console.log(data);
             var frame=obj.createFlow(data,false);
             obj.initFrame(frame);
-
         });
     }else {
-        $.getJSON(host+"/api/GetFlowItem?flowItemId=" + id + "&callback=?", function (data) {
+        $.getJSON(host+"/api/GetFlowItem?flowItemId=" + WorkflowProcessId + "&callback=?", function (data) {
             data = data.ProcessContent.replace(/fpdl:/g, "");
             console.log(data);
             var frame = obj.createFlow(data, false);
@@ -294,12 +296,39 @@ var setLable=function(text){
     return svg_label;
 }
 
+// Polyfill for PhantomJS. This can be safely ignored if not using PhantomJS.
+// Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== 'function') {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
+
+    var aArgs   = Array.prototype.slice.call(arguments, 1),
+        fToBind = this,
+        fNOP    = function() {},
+        fBound  = function() {
+          return fToBind.apply(this instanceof fNOP && oThis
+                 ? this
+                 : oThis,
+                 aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    fNOP.prototype = this.prototype;
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+}
+
 //加载设置节点操作
 dagred3Story.prototype.initFrame = function(f) {
         this.g.graph().ranksep = 50;
         this.g.graph().nodesep = 20;
         //this.g.graph().rankdir = "RL";
-        f.Frame.forEach(function(x) {
+        var loadNode=function(x){
             switch(x[0]) {
                 case 'removeNode':
                     this.g.removeNode(x[1])
@@ -327,11 +356,11 @@ dagred3Story.prototype.initFrame = function(f) {
                     var xlable=setLable(x[3]);
                     this.g.setEdge(x[1], x[2], {
                         label:x[3]
-                        ,curve: d3.curveBasis
+                        ,curve: d3.curveBasis //curveLinear
                         ,labeloffset:10
                         ,arrowheadStyle: "fill: #89bcde"
                         ,labelpos: 'c'
-                        ,arrowhead: 'vee'
+                        ,arrowhead: 'vee' //normal、undirected
                     });
                     break;
                 }
@@ -343,7 +372,18 @@ dagred3Story.prototype.initFrame = function(f) {
                 default:
                     console.log ("Schedule Network element "+x+" is not implemented")
                 }
-        }.bind(this))
+        }.bind(this);
+        if(ProcessInstanceId){
+             f.Frame.forEach(function(x) {
+                console.log(x[1]);
+                loadNode(x);
+              });
+           
+        }else{
+            f.Frame.forEach(function(x) {
+                loadNode(x);
+            });
+        }
 
         if (this.g) {
             this.dagreD3render(this.inner,this.g);
