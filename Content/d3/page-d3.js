@@ -195,8 +195,8 @@ $.getUrlParam = function (name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
-//var host = "http://10.211.55.11:8084/wfapi";
-var host = "https://58.213.48.24:3001";
+var host = "http://10.211.55.11:8084/wfapi";
+//var host = "https://58.213.48.24:3001";
 var ProcessInstanceId;
 dagred3Story.prototype.initFlow=function(){
     var index = 0,name,obj=this;
@@ -221,10 +221,11 @@ dagred3Story.prototype.initFlow=function(){
     {
         var ProcessId=$.getUrlParam("ProcessId");
         var Version=$.getUrlParam("Version");
-        $.getJSON(host+"/api/GetFlowItemByProcessIdAndVersion?ProcessId="+ProcessId+"&Version="+Version+"&callback=?", function(data){
-            data=data.ProcessContent.replace(/fpdl:/g,"");
+        $.getJSON(host+"/api/GetFlowDetail?ProcessId="+ProcessId+"&Version="+Version+"&ProcessInstanceId="+ProcessInstanceId+"&callback=?", function(data){
+            var wd=data.WorkFlow;
+            var ProcessContent=wd.ProcessContent.replace(/fpdl:/g,"");
             console.log(data);
-            var frame=obj.createFlow(data,false);
+            var frame=obj.createFlow(ProcessContent,false);
             obj.initFrame(frame);
         });
     }else {
