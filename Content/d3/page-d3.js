@@ -195,9 +195,9 @@ $.getUrlParam = function (name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
-var host = "http://10.211.55.11:8084/wfapi";
-//var host = "https://58.213.48.24:3001";
-var ProcessInstanceId;
+//var host = "http://10.211.55.11:8084/wfapi";
+var host = "https://58.213.48.24:3001";
+var WorkflowProcessId;
 dagred3Story.prototype.initFlow=function(){
     var index = 0,name,obj=this;
    /* switch(index)
@@ -215,12 +215,12 @@ dagred3Story.prototype.initFlow=function(){
         obj.initFrame(frame);
     });*/
 
-    var WorkflowProcessId=$.getUrlParam("WorkflowProcessId");
-    ProcessInstanceId=$.getUrlParam("ProcessInstanceId");
+    WorkflowProcessId=$.getUrlParam("WorkflowProcessId");
     if(!WorkflowProcessId)
     {
         var ProcessId=$.getUrlParam("ProcessId");
         var Version=$.getUrlParam("Version");
+        var ProcessInstanceId=$.getUrlParam("ProcessInstanceId");
         $.getJSON(host+"/api/GetFlowDetail?ProcessId="+ProcessId+"&Version="+Version+"&ProcessInstanceId="+ProcessInstanceId+"&callback=?", function(data){
             var wd=data.WorkFlow;
             var ProcessContent=wd.ProcessContent.replace(/fpdl:/g,"");
@@ -374,9 +374,9 @@ dagred3Story.prototype.initFrame = function(f) {
                     console.log ("Schedule Network element "+x+" is not implemented")
                 }
         }.bind(this);
-        if(ProcessInstanceId){
+
+        if(WorkflowProcessId){
              f.Frame.forEach(function(x) {
-                console.log(x[1]);
                 loadNode(x);
               });
            

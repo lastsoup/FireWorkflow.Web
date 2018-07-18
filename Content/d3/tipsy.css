@@ -138,8 +138,8 @@ text {
   position: fixed;
     min-height: 20px;
     line-height: 20px;
-    right: 10px;
-    top: 10px;
+     right: 20px;
+    top: 7px;
     z-index: 9;
     padding:6px 10px;
     background-color: #3b4146;
@@ -172,37 +172,53 @@ text {
     -moz-osx-font-smoothing: grayscale;}
 
 .aside-container{
-      box-shadow: 0 0 5px 6px rgba(0,0,0,0.15);
-      left: auto;
-    right: 0;
-    padding:5px 20px;
+    right: 10px;
+    padding: 0px 20px 20px 20px;
     position: absolute;
     width: 200px;
     height: auto;
-        top: 0;
-    bottom: 0;
-    min-height: 100vh;
+    top: 10px;hhhn
     overflow: hidden;
     z-index: 8;
     background-color: #fff;
-    
+    box-shadow: 0 0 3px #ccc;
+    font-size: 14px;
+    border-radius: 3px;
 }
 
 .text-semibold{
     color: #2b425b;
     font-weight: 600;
+    font-size: 16px;
 }
 
 .mar-btm {
     margin-bottom: 14px;
     font-size: 13px;
-    color: #5e5e5e;
+    color: #758697;
 }
 
 .radio {
-    float: right!important;
-    position: relative;
-    display: block;
+     width: 70%;
+    float: left;
+}
+
+.lable-text{
+  width: 30%;
+  float: left;
+}
+
+.magic-radio+label:after {
+    top: 3.5px;
+    left: 3.5px;
+}
+
+.magic-radio+label:not(:empty) {
+    padding: 0 20px 10px 20px!important;
+}
+hr{
+    border: 1px solid #eee;
+    border-bottom: 0;
 }
 
 .tipsy { font-size: 13px; position: absolute; padding: 5px; z-index: 100000; }
