@@ -216,6 +216,11 @@ text {
 .magic-radio+label:not(:empty) {
     padding: 0 20px 10px 20px!important;
 }
+
+.labelpos .magic-radio+label:not(:empty) {
+    padding: 0 5px 10px 20px!important;
+}
+
 hr{
     border: 1px solid #eee;
     border-bottom: 0;

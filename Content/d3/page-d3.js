@@ -223,10 +223,11 @@ dagred3Story.prototype.initFlow=function(){
         var ProcessInstanceId=$.getUrlParam("ProcessInstanceId");
         $.getJSON(host+"/api/GetFlowDetail?ProcessId="+ProcessId+"&Version="+Version+"&ProcessInstanceId="+ProcessInstanceId+"&callback=?", function(data){
             var wd=data.WorkFlow;
+            var task=data.TaskInstance;
             var ProcessContent=wd.ProcessContent.replace(/fpdl:/g,"");
             console.log(data);
             var frame=obj.createFlow(ProcessContent,false);
-            obj.initFrame(frame);
+            obj.initFrame(frame,task);
         });
     }else {
         $.getJSON(host+"/api/GetFlowItem?flowItemId=" + WorkflowProcessId + "&callback=?", function (data) {
@@ -325,7 +326,7 @@ if (!Function.prototype.bind) {
 }
 
 //加载设置节点操作
-dagred3Story.prototype.initFrame = function(f) {
+dagred3Story.prototype.initFrame = function(f,task) {
         this.g.graph().ranksep = 50;
         this.g.graph().nodesep = 20;
         //this.g.graph().rankdir = "RL";
@@ -335,7 +336,9 @@ dagred3Story.prototype.initFrame = function(f) {
                     this.g.removeNode(x[1])
                     break;
                 case 'setActivity':
+                {
                     this.g.setNode(x[1],{label:x[2]});
+                }
                     break;
                 case 'setRadiusNode':
                     this.g.setNode(x[1],{label:x[2],rx:10,ry:10,shape: 'rect'});
@@ -377,11 +380,14 @@ dagred3Story.prototype.initFrame = function(f) {
 
         if(WorkflowProcessId){
              f.Frame.forEach(function(x) {
-                loadNode(x);
+                 loadNode(x);
               });
            
         }else{
             f.Frame.forEach(function(x) {
+                var ss=task.find(function(i) {
+                        return i.ActivityId === x[1];
+                })
                 loadNode(x);
             });
         }
