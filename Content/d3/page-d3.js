@@ -134,14 +134,14 @@ dagred3Story.prototype.createFlow=function(data,sy)
         var tasks=[];
         $(i).find("Task").each(function(){
             var DisplayName=$(this).attr("DisplayName");
-            var task={"DisplayName":DisplayName};
+            var task={"DisplayName":DisplayName,"task":""};
             //tasks.push(task);
             TaskObject[Id]=task;
         });
          $(i).find("TaskRef").each(function(){
             var Reference=$(this).attr("Reference");
             var DisplayName=father.find("[Id='"+Reference+"']").attr("DisplayName");
-            var task={"DisplayName":DisplayName};
+            var task={"DisplayName":DisplayName,"task":""};
             //tasks.push(task);
             TaskObject[Id]=task;
         });
@@ -198,6 +198,7 @@ $.getUrlParam = function (name) {
 //var host = "http://10.211.55.11:8084/wfapi";
 var host = "https://58.213.48.24:3001";
 var WorkflowProcessId;
+var TaskInstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
 dagred3Story.prototype.initFlow=function(){
     var index = 0,name,obj=this;
    /* switch(index)
@@ -298,46 +299,24 @@ var setLable=function(text){
     return svg_label;
 }
 
-// Polyfill for PhantomJS. This can be safely ignored if not using PhantomJS.
-// Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-if (!Function.prototype.bind) {
-  Function.prototype.bind = function(oThis) {
-    if (typeof this !== 'function') {
-      // closest thing possible to the ECMAScript 5
-      // internal IsCallable function
-      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-    }
-
-    var aArgs   = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
-        fNOP    = function() {},
-        fBound  = function() {
-          return fToBind.apply(this instanceof fNOP && oThis
-                 ? this
-                 : oThis,
-                 aArgs.concat(Array.prototype.slice.call(arguments)));
-        };
-
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
-
-    return fBound;
-  };
-}
 
 //加载设置节点操作
-dagred3Story.prototype.initFrame = function(f,task) {
+dagred3Story.prototype.initFrame = function(f,tasks) {
         this.g.graph().ranksep = 50;
         this.g.graph().nodesep = 20;
         //this.g.graph().rankdir = "RL";
-        var loadNode=function(x){
+        var loadNode=function(x,t){
+            var statefill="#3E7E9C";
+            if(t){
+                statefill = t.State == TaskInstanceStateEnum[1] ? "#F18308" : "#878787";
+            }
             switch(x[0]) {
                 case 'removeNode':
                     this.g.removeNode(x[1])
                     break;
                 case 'setActivity':
                 {
-                    this.g.setNode(x[1],{label:x[2]});
+                    this.g.setNode(x[1],{label:x[2], style: "fill:"+statefill+"" });
                 }
                     break;
                 case 'setRadiusNode':
@@ -385,10 +364,13 @@ dagred3Story.prototype.initFrame = function(f,task) {
            
         }else{
             f.Frame.forEach(function(x) {
-                var ss=task.find(function(i) {
-                        return i.ActivityId === x[1];
-                })
-                loadNode(x);
+                var t=tasks.find(function(i) {
+                    return i.ActivityId === x[1];
+                   })
+                   if(t){
+                      f.Task[t.ActivityId]["task"]=t;
+                   }
+                loadNode(x,t);
             });
         }
 
