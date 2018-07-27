@@ -12,7 +12,7 @@ var dagred3Story = function(svgelement) {
 };
 
 //创建xml的流程
-dagred3Story.prototype.createProcess=function(data,sy)
+/*dagred3Story.prototype.createProcess=function(data,sy)
 {
         var getId=function(tagName){
           var Node=father.getElementsByTagName(tagName);
@@ -88,7 +88,7 @@ dagred3Story.prototype.createProcess=function(data,sy)
             });
         }
         return FrameArry;
-}
+}*/
 
 //创建数据库获取的流程
 //sy是同步器
@@ -103,8 +103,8 @@ dagred3Story.prototype.createFlow=function(data,sy)
     var FrameArry=new Array();
     var TaskObject=new Object();
     //添加开始/结束
-    var StartNode=["setRadiusNode",getId("StartNode"),"开始"];
-    var EndNode=["setRadiusNode",getId("EndNode"),"结束"];
+    var StartNode=["setStartNode",getId("StartNode"),"开始"];
+    var EndNode=["setEndNode",getId("EndNode"),"结束"];
     FrameArry.push(StartNode);
     FrameArry.push(EndNode);
     //添加同步器
@@ -198,7 +198,7 @@ $.getUrlParam = function (name) {
 //var host = "http://10.211.55.11:8084/wfapi";
 var host = "https://58.213.48.24:3001";
 var WorkflowProcessId;
-var TaskInstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
+var InstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
 dagred3Story.prototype.initFlow=function(){
     var index = 0,name,obj=this;
    /* switch(index)
@@ -306,42 +306,49 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
         this.g.graph().nodesep = 20;
         //this.g.graph().rankdir = "RL";
         var loadNode=function(x,t){
-            var statefill="#3E7E9C";
+            var rectfill="#3E7E9C";
+            var linefill="#89bcde";
             if(t){
-                statefill = t.State == TaskInstanceStateEnum[1] ? "#F18308" : "#878787";
+                linefill=rectfill = t.State == InstanceStateEnum[1] ? "#F18308" : "#878787";
             }
             switch(x[0]) {
                 case 'removeNode':
                     this.g.removeNode(x[1])
                     break;
                 case 'setActivity':
-                {
-                    this.g.setNode(x[1],{label:x[2], style: "fill:"+statefill+"" });
-                }
+                    //矩形
+                    this.g.setNode(x[1],{label:x[2], style: "fill:"+rectfill });
+                    break;
+                case 'setStartNode':
+                    //开始矩形
+                    this.g.setNode(x[1],{label:x[2],rx:10,ry:10,shape: 'rect',style: "fill:"+rectfill});
+                    break;
+               case 'setEndNode':
+                    //结束矩形
+                    this.g.setNode(x[1],{label:x[2],rx:10,ry:10,shape: 'rect',style: "fill:"+rectfill});
                     break;
                 case 'setRadiusNode':
+                    //圆角矩形
                     this.g.setNode(x[1],{label:x[2],rx:10,ry:10,shape: 'rect'});
                     break;
                 case 'setMilestone':
+                    //菱形（选择）
                     this.g.setNode(x[1],{label:x[2],shape: 'diamond'})
                     break;
                 case 'setSynchronizer':
+                    //S同步器
                     this.g.setNode(x[1],{label:'S',shape: 'circle',padding:5})
-                    break;
-                case 'AddCoherenceEdge':
-                    this.g.setEdge(x[1], x[2], {
-                        curve: d3.curveBasis
-                        ,arrowheadStyle: "fill: #89bcde"
-                    });
                     break;
                 case 'AddDependencyEdge':
                 {
+                    //添加连接线
                     var xlable=setLable(x[3]);
                     this.g.setEdge(x[1], x[2], {
                         label:x[3]
                         ,curve: d3.curveBasis //curveLinear
                         ,labeloffset:10
-                        ,arrowheadStyle: "fill: #89bcde"
+                        ,style:"stroke:"+linefill
+                        ,arrowheadStyle: "fill:"+linefill
                         ,labelpos: 'c'
                         ,arrowhead: 'vee' //normal、undirected
                     });
@@ -363,13 +370,25 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
               });
            
         }else{
+            //判断是否办结
+            var state=$.grep(tasks,function(n,i){
+                return n.State != InstanceStateEnum[7];
+            }).length;
             f.Frame.forEach(function(x) {
-                var t=tasks.find(function(i) {
-                    return i.ActivityId === x[1];
-                   })
+                  if(state==0){
+                     var t={"State":"COMPLETED"};
+                   }else{
+                   var ActivityId=x[0]=="AddDependencyEdge"?x[2]:x[1];
+                   var t=$.grep(tasks,function(n,i){
+                         return n.ActivityId === ActivityId;
+                   })[0];
+                    //绑定到悬浮数据
                    if(t){
                       f.Task[t.ActivityId]["task"]=t;
                    }
+                   t=x[0]=="setStartNode"?{"State":"COMPLETED"}:t;
+                  
+                }
                 loadNode(x,t);
             });
         }
