@@ -354,11 +354,6 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
                     });
                     break;
                 }
-                case 'setTip':
-                {
-                    
-                    break;
-                }
                 default:
                     console.log ("Schedule Network element "+x+" is not implemented")
                 }
@@ -375,9 +370,7 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
                 return n.State != InstanceStateEnum[7];
             }).length;
             f.Frame.forEach(function(x) {
-                  if(state==0){
-                     var t={"State":"COMPLETED"};
-                   }else{
+                 
                    var ActivityId=x[0]=="AddDependencyEdge"?x[2]:x[1];
                    var t=$.grep(tasks,function(n,i){
                          return n.ActivityId === ActivityId;
@@ -386,9 +379,11 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
                    if(t){
                       f.Task[t.ActivityId]["task"]=t;
                    }
-                   t=x[0]=="setStartNode"?{"State":"COMPLETED"}:t;
-                  
-                }
+                   if(state==0){
+                     var t={"State":"COMPLETED"};
+                   }else{
+                     t=x[0]=="setStartNode"?{"State":"COMPLETED"}:t;
+                   }
                 loadNode(x,t);
             });
         }
@@ -403,7 +398,17 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
             this.inner.selectAll("g.node").attr("title", function(v) { 
                 var task=f.Task[v];
                 if(task){
+                    var x=task["task"];
+                    var ActorId='';
+                   if(x){
+                     x.workitems.forEach(function(i) {
+                        ActorId=ActorId+" "+i.ActorId;
+                     });
+                   }
                    var dom='<p>任务名：'+task.DisplayName+'</p>';
+                   if(ActorId){
+                    dom=dom+'<p>执行人：'+ActorId+'</p>';
+                   }
                    return dom;
                 }
             }).each(function(v) {
