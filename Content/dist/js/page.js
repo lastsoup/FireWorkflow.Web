@@ -4,7 +4,7 @@ var WFUrl = "http://58.213.48.24:3002/WorkflowProcessView.aspx";
 var InstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
 $(document).ready(function () {
     $("#mainHeadName,#mainHeadActive").text("创建任务");
-    $.getJSON(host+"/api/SetCookie?name=approver1&callback=?", function (data) {
+    $.getJSON(host+"/api/SetCookie?name=manager&callback=?", function (data) {
         
     });
     $("#mainHeadContent").text("任务列表");

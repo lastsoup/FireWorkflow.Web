@@ -226,15 +226,19 @@ dagred3Story.prototype.initFlow=function(){
             var wd=data.WorkFlow;
             var task=data.TaskInstance;
             var ProcessContent=wd.ProcessContent.replace(/fpdl:/g,"");
+            $(".viewtitle .title").html(wd.DisplayName);
+            $(".viewtitle .chart-des").html(wd.Description);
+            $(".viewtitle .down")
             console.log(data);
             var frame=obj.createFlow(ProcessContent,false);
             obj.initFrame(frame,task);
         });
     }else {
         $.getJSON(host+"/api/GetFlowItem?flowItemId=" + WorkflowProcessId + "&callback=?", function (data) {
-            data = data.ProcessContent.replace(/fpdl:/g, "");
-            console.log(data);
-            var frame = obj.createFlow(data, false);
+            var ProcessContent = data.ProcessContent.replace(/fpdl:/g, "");
+            $(".viewtitle .title").html(data.DisplayName);
+            $(".viewtitle .chart-des").html(data.Description);
+            var frame = obj.createFlow(ProcessContent, false);
             obj.initFrame(frame);
 
         });
@@ -304,10 +308,11 @@ var setLable=function(text){
 dagred3Story.prototype.initFrame = function(f,tasks) {
         this.g.graph().ranksep = 50;
         this.g.graph().nodesep = 20;
-        //this.g.graph().rankdir = "RL";
+        this.g.graph().rankdir = defaultFlowOption.rankdir;
         var loadNode=function(x,t){
             var rectfill="#3E7E9C";
             var linefill="#89bcde";
+            var runningclass=t&&t.ActivityId?"run":"";
             if(t){
                 linefill=rectfill = t.State == InstanceStateEnum[1] ? "#F18308" : "#878787";
             }
@@ -317,7 +322,7 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
                     break;
                 case 'setActivity':
                     //矩形
-                    this.g.setNode(x[1],{label:x[2], style: "fill:"+rectfill });
+                    this.g.setNode(x[1],{label:x[2],class:runningclass,style: "fill:"+rectfill });
                     break;
                 case 'setStartNode':
                     //开始矩形
@@ -333,7 +338,7 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
                     break;
                 case 'setMilestone':
                     //菱形（选择）
-                    this.g.setNode(x[1],{label:x[2],shape: 'diamond'})
+                    this.g.setNode(x[1],{label:x[2],shape: 'diamond',class:runningclass,style: "fill:"+rectfill})
                     break;
                 case 'setSynchronizer':
                     //S同步器
@@ -345,12 +350,12 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
                     var xlable=setLable(x[3]);
                     this.g.setEdge(x[1], x[2], {
                         label:x[3]
-                        ,curve: d3.curveBasis //curveLinear
+                        ,curve: defaultFlowOption.curve//d3.curveBasis 、curveLinear
                         ,labeloffset:10
                         ,style:"stroke:"+linefill
                         ,arrowheadStyle: "fill:"+linefill
-                        ,labelpos: 'c'
-                        ,arrowhead: 'vee' //normal、undirected
+                        ,labelpos: defaultFlowOption.labelpos //c、l、r
+                        ,arrowhead: defaultFlowOption.arrowhead//vee、normal、undirected
                     });
                     break;
                 }
@@ -380,7 +385,7 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
                       f.Task[t.ActivityId]["task"]=t;
                    }
                    if(state==0){
-                     var t={"State":"COMPLETED"};
+                     t={"State":"COMPLETED","ActivityId":(typeof(t)=="undefined"?"":t.ActivityId)};
                    }else{
                      t=x[0]=="setStartNode"?{"State":"COMPLETED"}:t;
                    }

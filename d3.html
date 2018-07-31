@@ -13,13 +13,13 @@
 </head>
 <body>
 <div class="viewtitle">
-<span class="title">循环结构流程图</span>
+<span class="title">我的流程图</span>
 <div class="chart-tags">
 <i class="icons iconfont">&#xe71e;</i>
 <a class="chart-tag">流程图</a>
-<a class="chart-tag">循环结构</a>
+<a class="chart-tag">D3</a>
 </div>
-<div class="chart-des">减少源程序重复书写的工作量，用来描述重复执行某段算法的问题</div>
+<div class="chart-des"></div>
 <i class="icons iconfont down">&#xe63e;</i>
 </div>
 <button class="btn-setting"><i class="iconfont">&#xe613;</i></button>
@@ -27,54 +27,70 @@
   <p class="text-semibold text-main mar-no">显示设置</p>
    <div class="mar-btm">
     <label class="lable-text">连接线</label>
-    <div class="radio">
-              <input id="demo-inline-form-radio" class="magic-radio" type="radio" name="inline-form-radio" checked>
-              <label for="demo-inline-form-radio">平滑</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">转折</label>
+    <div class="radio" name="curve">
+              <input id="line-radio1" value="curveBasis" class="magic-radio" type="radio" name="line-radio" checked>
+              <label for="line-radio1">平滑</label>
+              <input id="line-radio2" value="curveLinear" class="magic-radio" type="radio" name="line-radio">
+              <label for="line-radio2">转折</label>
     </div>
   </div>
   <hr>
    <div class="mar-btm">
     <label class="lable-text">箭头</label>
-    <div class="radio">
-              <input id="demo-inline-form-radio" class="magic-radio" type="radio" name="inline-form-radio" checked>
-              <label for="demo-inline-form-radio">尖角</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">三角</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">无</label>
+    <div class="radio" name="arrowhead">
+              <input id="arrow-radio1" value="vee" class="magic-radio" type="radio" name="arrow-radio" checked>
+              <label for="arrow-radio1">尖角</label>
+              <input id="arrow-radio2" value="normal" class="magic-radio" type="radio" name="arrow-radio">
+              <label for="arrow-radio2">三角</label>
+              <input id="arrow-radio3" value="undirected" class="magic-radio" type="radio" name="arrow-radio">
+              <label for="arrow-radio3">无</label>
     </div>
   </div>
   <hr>
     <div class="mar-btm labelpos">
     <label class="lable-text">字位置</label>
-    <div class="radio">
-              <input id="demo-inline-form-radio" class="magic-radio" type="radio" name="inline-form-radio" checked>
-              <label for="demo-inline-form-radio">上</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">中</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">下</label>
+    <div class="radio" name="labelpos">
+              <input id="lable-radio1"  value="l" class="magic-radio" type="radio" name="lable-radio">
+              <label for="lable-radio1">左</label>
+              <input id="lable-radio2" value="c" class="magic-radio" type="radio" name="lable-radio" checked>
+              <label for="lable-radio2">中</label>
+              <input id="lable-radio3" value="r" class="magic-radio" type="radio" name="lable-radio">
+              <label for="lable-radio3">右</label>
     </div>
   </div>
    <hr>
     <div class="mar-btm">
     <label class="lable-text">图方向</label>
-    <div class="radio">
-              <input id="demo-inline-form-radio" class="magic-radio" type="radio" name="inline-form-radio" checked>
-              <label for="demo-inline-form-radio">上下</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">下上</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">左右</label>
-              <input id="demo-inline-form-radio-2" class="magic-radio" type="radio" name="inline-form-radio">
-              <label for="demo-inline-form-radio-2">右左</label>
+    <div class="radio" name="rankdir">
+              <input id="p-radio1" value="TB" class="magic-radio" type="radio" name="p-radio">
+              <label for="p-radio1">上下</label>
+              <input id="p-radio2" value="BT" class="magic-radio" type="radio" name="p-radio">
+              <label for="p-radio2">下上</label>
+              <input id="p-radio3" value="LR" class="magic-radio" type="radio" name="p-radio" checked>
+              <label for="p-radio3">左右</label>
+              <input id="p-radio4" value="RL" class="magic-radio" type="radio" name="p-radio">
+              <label for="p-radio4">右左</label>
     </div>
   </div>
 </aside>
 <svg id="schedule"></svg>
 <script id="js">
+var defaultFlowOption={
+  curve:d3["curveBasis"],
+  arrowhead:"vee",
+  labelpos:"c",
+  rankdir:"LR"
+}
+$(".magic-radio").change(function() {
+  var name=$(this).parent().attr("name");
+  var value=this.value;
+  if(name=="curve"){
+     defaultFlowOption[name]=d3[value];
+  }else{
+     defaultFlowOption[name]=value;
+  }
+  schedulestory.initFlow();
+});
 var schedulestory = new dagred3Story("#schedule");
 schedulestory.initFlow();
 </script>
