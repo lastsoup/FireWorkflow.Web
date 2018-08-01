@@ -258,9 +258,7 @@ a:focus {
   padding: 15px 15px;
   font-family: fontAwesome;
 }
-.main-header .sidebar-toggle:before {
-  content: "\f0c9";
-}
+
 .main-header .sidebar-toggle:hover {
   color: #fff;
 }
@@ -542,7 +540,7 @@ a:focus {
   margin-right: 10px;
   margin-top: 3px;
 }
-.sidebar-menu li.active > a > .fa-angle-left {
+.sidebar-menu li.active > a > .icon-zuo {
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   -o-transform: rotate(-90deg);

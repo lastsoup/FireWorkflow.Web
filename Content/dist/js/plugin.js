@@ -51,7 +51,6 @@
                 dataType: "jsonp",
                 jsonp: 'callback',
                 success: function (data) {
-                    console.log(data);
                     _initTable(data);
                     options.done();
                 }
