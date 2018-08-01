@@ -1,11 +1,6 @@
 var dagred3Story = function(svgelement) {
     this.g = new dagreD3.graphlib.Graph().setGraph({});
     this.g.setDefaultEdgeLabel(function() { return {}; });
-    this.g.graph().marginx = 10;
-    this.g.graph().marginy = 10;
-    this.g.graph().rankdir = "LR";
-    this.g.graph().ranksep = 30;
-    this.g.graph().nodesep = 30;
     this.svg = d3.select(svgelement);
     this.inner = this.svg.append("g");
     this.dagreD3render = new dagreD3.render();
@@ -308,6 +303,8 @@ var setLable=function(text){
 dagred3Story.prototype.initFrame = function(f,tasks) {
         this.g.graph().ranksep = 50;
         this.g.graph().nodesep = 20;
+        this.g.graph().marginx = 10;
+        this.g.graph().marginy = 10;
         this.g.graph().rankdir = defaultFlowOption.rankdir;
         var loadNode=function(x,t){
             var rectfill="#3E7E9C";

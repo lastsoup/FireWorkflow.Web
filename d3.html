@@ -81,6 +81,17 @@ var defaultFlowOption={
   labelpos:"c",
   rankdir:"LR"
 }
+$(".viewtitle .down").click(function(){
+  $(".viewtitle .chart-des").toggle(function(){
+     var icon=$(this).is(':visible')?"&#xe63d;":"&#xe63e;"; 
+     $(".viewtitle .down").html(icon);
+  });
+});
+
+$(".btn-setting").click(function(){
+  $(".aside-container").toggle();
+});
+
 $(".magic-radio").change(function() {
   var name=$(this).parent().attr("name");
   var value=this.value;
