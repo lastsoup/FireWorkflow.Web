@@ -2,6 +2,7 @@ var dagred3Story = function(svgelement) {
     this.g = new dagreD3.graphlib.Graph().setGraph({});
     this.g.setDefaultEdgeLabel(function() { return {}; });
     this.svg = d3.select(svgelement);
+    this.g.graph().rankdir ="LR";
     this.inner = this.svg.append("g");
     this.dagreD3render = new dagreD3.render();
 };
@@ -223,8 +224,6 @@ dagred3Story.prototype.initFlow=function(){
             var ProcessContent=wd.ProcessContent.replace(/fpdl:/g,"");
             $(".viewtitle .title").html(wd.DisplayName);
             $(".viewtitle .chart-des").html(wd.Description);
-            $(".viewtitle .down")
-            console.log(data);
             var frame=obj.createFlow(ProcessContent,false);
             obj.initFrame(frame,task);
         });
