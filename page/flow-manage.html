@@ -29,9 +29,10 @@
 <table id="example2" class="table table-bordered table-striped">
 <thead>
 <tr>
-    <th width="35%">业务信息</th>
-    <th width="35%">创建人</th>
-    <th width="10%"><center>操作</center></th>
+    <th>创建时间</th>
+    <th>业务信息</th>
+    <th>创建人</th>
+    <th><center>操作</center></th>
 </tr>
 </thead>
 </table>
@@ -58,10 +59,11 @@
         //return value;
         var dt = $("#example2").anTable({ url: null,
             columns: [
+                    { "data": "CreatedTime" },
                     { "data": "DisplayName" },
                     { "data": "CreatorId" }
                  ],
-            columnDefs: [{ "orderable": false, "targets": 2, className: "edit_class", "defaultContent": '<div class="t_action"><a href="javascript:;" id="view" class="btn btn-block btn-info detail" title="详细信息" >详细</a></div>',
+            columnDefs: [{ "orderable": false, "targets": 3, className: "edit_class", "defaultContent": '<div class="t_action"><a href="javascript:;" id="view" class="btn btn-block btn-info detail" title="详细信息" >详细</a></div>',
                 "render": function (data, type, row) { }
             }]
         });
@@ -119,7 +121,7 @@
                             dt.draw();
                             $('#example2 tbody').on('click', 'a.detail', function (e) {
                                 var row = $('#example2').DataTable().row($(this).parents('tr')).data();
-                                var detailurl = host + "/api/GetTaskInstancesList?ProcessInstanceId=" + row.Id;
+                                var detailurl = host + "/api/GetTaskInstances?ProcessInstanceId=" + row.Id;
                                 $.ajax({
                                     type: "GET",
                                     url: detailurl,

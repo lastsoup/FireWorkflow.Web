@@ -1,0 +1,35 @@
+﻿<link rel="stylesheet" href="Content/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css" />
+<div class="panel">
+    <div class="panel-body">
+    <textarea name="content" data-provide="markdown" rows="20">
+Emphasis, aka italics, with *asterisks* or _underscores_.
+                    
+Strong emphasis, aka bold, with **asterisks** or __underscores__.
+                    
+Combined emphasis with **asterisks and _underscores_**.
+                    
+Strikethrough uses two tildes. ~~Scratch this.~~
+
+
+* Unordered list can use asterisks
+- Or minuses
++ Or pluses
+    </textarea>
+</div>
+</div>
+
+<script type="text/javascript">
+     /* MARKDOWN GLOBAL FUNCTION & DATA-API
+  * ==================================== */
+  var initMarkdown = function(el) {
+    var $this = el;
+    $this.markdown();
+    $this.data('markdown').showPreview();
+  };
+    $(function () {
+      $('textarea[data-provide="markdown"]').each(function(){
+        initMarkdown($(this));
+      })
+    });
+
+</script>

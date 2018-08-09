@@ -9,7 +9,7 @@ $(document).ready(function () {
     });
     $("#mainHeadContent").text("任务列表");
     x$('#maincontent').xhr('inner', './page/createtask.html?t=' + new Date().getTime());
-    $(".treeview-menu a").not($("#wfdesinger")).click(function () {
+    $(".treeview-menu a,.root-menu a").not($("#wfdesinger")).click(function () {
         var href=$(this).attr("action-href");
         var text=$(this).text();
         var title=$(this).attr("action-title");
