@@ -4774,3 +4774,8 @@ table.text-center th {
 {
     float: right;
 }
+
+i.icon-circle:before{
+    font-size: 14px;
+    margin-right: 5px;
+}

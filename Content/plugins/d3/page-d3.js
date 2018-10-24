@@ -240,6 +240,23 @@ dagred3Story.prototype.initFlow=function(){
    
 }
 
+dagred3Story.prototype.changeSetting=function(){ 
+     var g=this.g;
+     g.graph().rankdir = defaultFlowOption.rankdir;
+     $.each(g.edges(),function(){
+        var edge = g.edge(this);
+        edge.curve=defaultFlowOption.curve;//d3.curveBasis 、curveLinear 连接线
+        edge.labelpos=defaultFlowOption.labelpos; //c、l、r 文字标签位置
+        edge.arrowhead=defaultFlowOption.arrowhead;//vee、normal、undirected 箭头形状
+     });
+     //刷新页面
+     this.dagreD3render(this.inner,this.g);
+     //居中
+     this.setCenter();
+     //悬浮提示框
+     this.setFloat(this.f); 
+}
+
 function setSVG(svg_label,text,style){
     var tspan = document.createElementNS('http://www.w3.org/2000/svg','tspan');
     tspan.textContent = text;
@@ -249,46 +266,46 @@ function setSVG(svg_label,text,style){
 }
 
 dagred3Story.prototype.initWebFrame = function(Frame) {
- var g=this.g;  
- this.g.graph().ranksep = 30;
- this.g.graph().nodesep = 30;
- var framobj=new Object();
- Frame.forEach(function(x) {
-    var step=x.StepNumber+"_s";
-    var newx=typeof (framobj[step]) == "undefined" ?(new Array()):(framobj[step]);
-    newx.push(x);
-    framobj[step]=newx;
- });
-  var From=null;
-  for(var name in framobj){
-     var item=framobj[name];
-     item.forEach(function(x){
-        var workitems = typeof (x.workitems[0]) == "undefined" ? [{ActorId:"无",Id:"none"}]: x.workitems;
-        var ActorId="";
-        var table = document.createElement("table");
-        workitems.forEach(function(i) {
-            ActorId=ActorId+" "+i.ActorId;
-        });
-        var svg_label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        svg_label.setAttribute('dy', '1em');
-        svg_label.setAttribute('x', '1');
-        setSVG(svg_label,x.DisplayName+": ",null);
-        var statefill = x.State == TaskInstanceStateEnum[1] ? "#F18308" : "#878787";
-        var label=setSVG(svg_label,ActorId,{fill:statefill,fontWeight:"bold"});
-        g.setNode(x.Id,{rx:5,ry:5,label: label, labelType: 'svg'});
-        //g.setNode(x.Id,{rx:5,ry:5,label:x.DisplayName+": "+ActorId});
-        if(From){
-           From.forEach(function(f){
-                g.setEdge(f.Id, x.Id, {arrowheadStyle: "fill: #333"});
-            })
-        }
+     var g=this.g;  
+     this.g.graph().ranksep = 30;
+     this.g.graph().nodesep = 30;
+     var framobj=new Object();
+     Frame.forEach(function(x) {
+        var step=x.StepNumber+"_s";
+        var newx=typeof (framobj[step]) == "undefined" ?(new Array()):(framobj[step]);
+        newx.push(x);
+        framobj[step]=newx;
      });
-     From=item;
-  }
- this.dagreD3render(this.inner,this.g);
- var initialScale = 1;
- this.svg.attr('width', this.g.graph().width * initialScale);
- this.svg.attr('height', this.g.graph().height * initialScale);
+      var From=null;
+      for(var name in framobj){
+         var item=framobj[name];
+         item.forEach(function(x){
+            var workitems = typeof (x.workitems[0]) == "undefined" ? [{ActorId:"无",Id:"none"}]: x.workitems;
+            var ActorId="";
+            var table = document.createElement("table");
+            workitems.forEach(function(i) {
+                ActorId=ActorId+" "+i.ActorId;
+            });
+            var svg_label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            svg_label.setAttribute('dy', '1em');
+            svg_label.setAttribute('x', '1');
+            setSVG(svg_label,x.DisplayName+": ",null);
+            var statefill = x.State == TaskInstanceStateEnum[1] ? "#F18308" : "#878787";
+            var label=setSVG(svg_label,ActorId,{fill:statefill,fontWeight:"bold"});
+            g.setNode(x.Id,{rx:5,ry:5,label: label, labelType: 'svg'});
+            //g.setNode(x.Id,{rx:5,ry:5,label:x.DisplayName+": "+ActorId});
+            if(From){
+               From.forEach(function(f){
+                    g.setEdge(f.Id, x.Id, {arrowheadStyle: "fill: #333"});
+                })
+            }
+         });
+         From=item;
+      }
+     this.dagreD3render(this.inner,this.g);
+     var initialScale = 1;
+     this.svg.attr('width', this.g.graph().width * initialScale);
+     this.svg.attr('height', this.g.graph().height * initialScale);
 }
 
 var setLable=function(text){
@@ -297,6 +314,58 @@ var setLable=function(text){
     return svg_label;
 }
 
+dagred3Story.prototype.setCenter=function(){
+    var inner=this.inner;
+    //缩放
+    var zoom = d3.zoom().on("zoom", function() {
+        inner.attr("transform", d3.event.transform);
+    });
+    zoom.scaleExtent([1, 10]);
+    this.svg.call(zoom);
+    //居中
+    var initialScale = 1;
+    var w=500,h=500;
+    var svg=this.svg,g=this.g;
+    var setSize=function(){
+      svg._groups.forEach(function(x) {
+      w=$(x).parent().width();
+      h=$(x).parent().height();
+     });
+      svg.attr('width', w);
+      svg.attr('height', h);
+      var x=(w - g.graph().width * initialScale) / 2;
+      var y=(h-  g.graph().height * initialScale) / 2;
+      svg.call(zoom.transform, d3.zoomIdentity.translate(x,y).scale(initialScale));
+    }
+    $(window).resize(function() {
+        setSize();
+    });
+    setSize();
+}
+
+dagred3Story.prototype.setFloat=function(f){
+ this.inner.selectAll("g.node").attr("title", function(v) { 
+    var task=f.Task[v];
+    if(task){
+        var x=task["task"];
+        var ActorId='';
+       if(x){
+         x.workitems.forEach(function(i) {
+            ActorId=ActorId+" "+i.ActorId;
+         });
+       }
+       var dom='<p>任务名：'+task.DisplayName+'</p>';
+       if(ActorId){
+        dom=dom+'<p>执行人：'+ActorId+'</p>';
+       }
+       return dom;
+    }
+}).each(function(v) {
+       if(f.Task[v]){
+        $(this).tipsy({ gravity: "w", opacity: 1, html: true });
+       }
+    });
+}
 
 //加载设置节点操作
 dagred3Story.prototype.initFrame = function(f,tasks) {
@@ -370,8 +439,7 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
             var state=$.grep(tasks,function(n,i){
                 return n.State != InstanceStateEnum[7];
             }).length;
-            f.Frame.forEach(function(x) {
-                 
+            f.Frame.forEach(function(x) {  
                    var ActivityId=x[0]=="AddDependencyEdge"?x[2]:x[1];
                    var t=$.grep(tasks,function(n,i){
                          return n.ActivityId === ActivityId;
@@ -391,51 +459,10 @@ dagred3Story.prototype.initFrame = function(f,tasks) {
 
         if (this.g) {
             this.dagreD3render(this.inner,this.g);
-            var inner=this.inner;
-            //缩放
-            var zoom = d3.zoom().on("zoom", function() {inner.attr("transform", d3.event.transform);});
-            this.svg.call(zoom);
-            //悬浮提示框
-            this.inner.selectAll("g.node").attr("title", function(v) { 
-                var task=f.Task[v];
-                if(task){
-                    var x=task["task"];
-                    var ActorId='';
-                   if(x){
-                     x.workitems.forEach(function(i) {
-                        ActorId=ActorId+" "+i.ActorId;
-                     });
-                   }
-                   var dom='<p>任务名：'+task.DisplayName+'</p>';
-                   if(ActorId){
-                    dom=dom+'<p>执行人：'+ActorId+'</p>';
-                   }
-                   return dom;
-                }
-            }).each(function(v) {
-                   if(f.Task[v]){
-                    $(this).tipsy({ gravity: "w", opacity: 1, html: true });
-                   }
-                });
             //居中
-            var initialScale = 1;
-            var w=500,h=500;
-            var svg=this.svg;
-            var setSize=function(){
-              svg._groups.forEach(function(x) {
-              w=$(x).parent().width();
-              h=$(x).parent().height();
-            });
-              svg.attr('width', w);
-              svg.attr('height', h);
-            }
-            $(window).resize(function() {
-                setSize();
-            });
-            setSize();
-            var x=(w - this.g.graph().width * initialScale) / 2;
-            var y=(h- this.g.graph().height * initialScale) / 2;
-            this.svg.call(zoom.transform, d3.zoomIdentity.translate(x,y).scale(initialScale));
-
+            this.setCenter();
+            //悬浮提示框
+            this.f=f;
+            this.setFloat(f);  
         }
 };
