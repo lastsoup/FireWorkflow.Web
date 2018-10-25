@@ -33,6 +33,7 @@ $(document).ready(function () {
             },
             error: function () {
                if(confirm("可能是证书错误引起的超时，是否验证证书？")){
+                    alert("请确保浏览器没有阻止弹出框，否则数据无法正常显示！")
                     //建立安全连接
                     var winObj=window.open(host+"/api/SetCookie?name=manager",'newindow','height=300,width=300,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
                     var loop = setInterval(function() {   
