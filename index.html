@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="https://at.alicdn.com/t/font_749083_8tkj9jsnc4.css" />
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
+    <div id="load-mask" style="position:fixed;width:100%;top: 0;bottom: 0;z-index:1000;">
+        <div style="position:fixed;width:100%;top: 0;bottom: 0;background:#ccc;opacity:0.3;filter:alpha(opacity=30);"></div>
+        <div class="mask-message">正在加载,请稍候 ...</div>
+    </div>
     <div class="wrapper">
       <header class="main-header">
         <!-- Logo -->
@@ -217,10 +221,6 @@
       </aside>
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-    <div id="load-mask" style="position:fixed;width:100%;top: 0;bottom: 0;z-index:1000;">
-        <div style="position:fixed;width:100%;top: 0;bottom: 0;background:#ccc;opacity:0.3;filter:alpha(opacity=30);"></div>
-        <div class="mask-message">正在加载,请稍候 ...</div>
-    </div>
     <!-- jQuery 2.1.4 -->
     <script src="Content/jQuery-2.1.4.min.js"></script>
 
@@ -239,6 +239,7 @@
     <script src="Content/plugins/xui/xui-2.3.2.js"></script>
     <script src="Content/dist/js/demo.js"></script>
     <script>
+        document.write('<script type="text/javascript" src="Content/dist/js/configure.js?' + Math.random() + '"><\/script>');
         document.write('<script type="text/javascript" src="Content/dist/js/plugin.js?' + Math.random() + '"><\/script>');
         document.write('<script type="text/javascript" src="Content/dist/js/page.js?' + Math.random() + '"><\/script>');
     </script>      

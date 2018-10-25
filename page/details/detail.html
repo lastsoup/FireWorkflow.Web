@@ -7,6 +7,7 @@
      <script src="../../Content/plugins/xui/xui-2.3.2.js"  type="text/javascript"></script>
      <script src="../../Content/plugins/d3/d3.v4.js"></script>
      <script src="../../Content/plugins/d3/dagre-d3.js"></script>
+     <script src="../../Content/dist/js/configure.js"></script>
      <script src="../../Content/plugins/d3/page-d3.js"></script>
      <style  type="text/css">
     body
@@ -149,10 +150,6 @@ a.processPic {
 
   </body>
   <script type="text/javascript">
-      TaskInstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
-      //var host = "http://10.211.55.11:8084/wfapi";
-      var host = "https://58.213.48.24:3001";
-      var host2="http://58.213.48.24:3002";
       $(function () {
           (function ($) {
               $.getUrlParam = function (name) {

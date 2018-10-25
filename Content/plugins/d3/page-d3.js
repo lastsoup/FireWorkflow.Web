@@ -191,10 +191,8 @@ $.getUrlParam = function (name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
-//var host = "http://10.211.55.11:8084/wfapi";
-var host = "https://58.213.48.24:3001";
+
 var WorkflowProcessId;
-var InstanceStateEnum = { 0: "INITIALIZED", 1: "RUNNING", 7: "COMPLETED", 9: "CANCELED" };
 dagred3Story.prototype.initFlow=function(){
     var index = 0,name,obj=this;
    /* switch(index)
@@ -291,7 +289,7 @@ dagred3Story.prototype.initWebFrame = function(Frame) {
             svg_label.setAttribute('dy', '1em');
             svg_label.setAttribute('x', '1');
             setSVG(svg_label,x.DisplayName+": ",null);
-            var statefill = x.State == TaskInstanceStateEnum[1] ? "#F18308" : "#878787";
+            var statefill = x.State == InstanceStateEnum[1] ? "#F18308" : "#878787";
             var label=setSVG(svg_label,ActorId,{fill:statefill,fontWeight:"bold"});
             g.setNode(x.Id,{rx:5,ry:5,label: label, labelType: 'svg'});
             //g.setNode(x.Id,{rx:5,ry:5,label:x.DisplayName+": "+ActorId});
