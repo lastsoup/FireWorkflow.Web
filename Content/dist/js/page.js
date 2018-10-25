@@ -35,7 +35,6 @@ $(document).ready(function () {
                if(confirm("可能是证书错误引起的超时，是否验证证书？")){
                     //建立安全连接
                     var winObj=window.open(host+"/api/SetCookie?name=manager",'newindow','height=300,width=300,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
-                    winObj.document.title="建立安全连接"; 
                     var loop = setInterval(function() {   
                         if(winObj.closed) {  
                             clearInterval(loop);  
