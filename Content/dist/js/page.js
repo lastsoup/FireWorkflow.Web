@@ -29,6 +29,7 @@ $(document).ready(function () {
             async: true,
             dataType: "jsonp",
             jsonp: 'callback',
+            timeout:2000,
             success: function (data) {
                alert(12);
             },
