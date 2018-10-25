@@ -2,7 +2,7 @@ var dagred3Story = function(svgelement) {
     this.g = new dagreD3.graphlib.Graph().setGraph({});
     this.g.setDefaultEdgeLabel(function() { return {}; });
     this.svg = d3.select(svgelement);
-    this.g.graph().rankdir ="LR";
+    this.g.graph().rankdir="LR";
     this.inner = this.svg.append("g");
     this.dagreD3render = new dagreD3.render();
 };
@@ -223,7 +223,7 @@ dagred3Story.prototype.initFlow=function(){
             var task=data.TaskInstance;
             var ProcessContent=wd.ProcessContent.replace(/fpdl:/g,"");
             $(".viewtitle .title").html(wd.DisplayName);
-            $(".viewtitle .chart-des").html(wd.Description);
+            $(".viewtitle .chart-des").html("描述："+wd.Description);
             var frame=obj.createFlow(ProcessContent,false);
             obj.initFrame(frame,task);
         });
@@ -265,6 +265,7 @@ function setSVG(svg_label,text,style){
     return svg_label;
 }
 
+//详细页面的人员流程图
 dagred3Story.prototype.initWebFrame = function(Frame) {
      var g=this.g;  
      this.g.graph().ranksep = 30;
@@ -369,8 +370,9 @@ dagred3Story.prototype.setFloat=function(f){
 
 //加载设置节点操作
 dagred3Story.prototype.initFrame = function(f,tasks) {
-        this.g.graph().ranksep = 50;
-        this.g.graph().nodesep = 20;
+        this.g.graph().ranksep = 50;//拍了间距
+        this.g.graph().nodesep = 20;//节点间距
+        this.g.graph().edgesep = 20;//连接线间距
         this.g.graph().marginx = 10;
         this.g.graph().marginy = 10;
         this.g.graph().rankdir = defaultFlowOption.rankdir;

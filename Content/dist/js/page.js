@@ -31,6 +31,10 @@ $(document).ready(function () {
             jsonp: 'callback',
             success: function (data) {
                alert(12);
+            },
+            error: function () {
+               alert(22);
             }
+
           });
 });
