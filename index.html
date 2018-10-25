@@ -217,7 +217,10 @@
       </aside>
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-
+    <div id="load-mask" style="position:fixed;width:100%;top: 0;bottom: 0;z-index:1000;">
+        <div style="position:fixed;width:100%;top: 0;bottom: 0;background:#ccc;opacity:0.3;filter:alpha(opacity=30);"></div>
+        <div class="mask-message">正在加载,请稍候 ...</div>
+    </div>
     <!-- jQuery 2.1.4 -->
     <script src="Content/jQuery-2.1.4.min.js"></script>
 
@@ -238,6 +241,6 @@
     <script>
         document.write('<script type="text/javascript" src="Content/dist/js/plugin.js?' + Math.random() + '"><\/script>');
         document.write('<script type="text/javascript" src="Content/dist/js/page.js?' + Math.random() + '"><\/script>');
-    </script>
+    </script>      
   </body>
 </html>

@@ -31,7 +31,7 @@ $(document).ready(function () {
             jsonp: 'callback',
             timeout:2000,
             success: function (data) {
-               alert(12);
+               $("#load-mask").hide();
             },
             error: function () {
                alert(22);
