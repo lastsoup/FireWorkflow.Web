@@ -167,7 +167,7 @@ a.processPic {
           var workItemUrl = host+"/api/workItemdetail?workItemId=" + WorkItemId+"&ProcessId="+ProcessId;
           var traceUrl = host + "/api/GetTaskInstances?processInstanceId=" + ProcessInstanceId;
           $('#btnslight').on('click', function (e) {
-              var flowurl = host2 + "/WorkflowProcessView.aspx?ProcessId=" + ProcessId + "&Version=" + Version + "&ProcessInstanceId=" + ProcessInstanceId;
+              var flowurl =WFUrl + "?ProcessId=" + ProcessId + "&Version=" + Version + "&ProcessInstanceId=" + ProcessInstanceId;
               window.open(flowurl, "_blank");
           });
 
