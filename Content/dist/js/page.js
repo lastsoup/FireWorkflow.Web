@@ -12,8 +12,15 @@ $(document).ready(function () {
         $("#mainHeadContent").text(title);
         x$('#maincontent').xhr('inner', './page/'+href+'.html?t=' + new Date().getTime());
     });
-    $.getJSON(host+"/api/SetCookie?name=riskevaluator1&callback=?", function (data) {
-        alert(data);
+
+    var username="riskevaluator1";
+    $.getJSON(host+"/api/SetCookie?name="+username+"&callback=?", function (data) {
+        if(data.Res=="Success")
+        {
+            $("#username").text(username);
+            alert(username+"登录成功！");
+        }
+         
     });
     $("#load-mask").hide(); 
     //  $.ajax({
