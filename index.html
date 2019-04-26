@@ -11,73 +11,6 @@
     <link rel="stylesheet" href="Content/dist/css/skins/all-skins.min.css" />
     <link rel="stylesheet" href="https://at.alicdn.com/t/font_749083_8tkj9jsnc4.css" />
     <link rel="stylesheet" href="Content/dist/css/skin.css" />
-    <style>
-      .all-func .function-item{
-    width: 25%;
-    height: 50px;
-    float: left;
-    margin-bottom: 50px;
-    padding-left: 5%;
-    text-align: left;
-}
-.all-func .function-item>div{
-
-}
-.all-func .function-item .icon{
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    margin-right: 15px;
-    border-radius: 4px;
-    color: #fff;
-    background: red;
-    cursor: pointer;
-    -webkit-transition: -webkit-transform .3s;
-    transition: -webkit-transform .3s;
-    transition: transform .3s;
-    -webkit-transform .3s;
-}
-.all-func .function-item .icon:hover{
-     transform: scale(1.3);
-}
-.all-func .function-item:nth-of-type(5n+1) .icon{
-    background: #0dcc6d;
-}
-.all-func .function-item:nth-of-type(5n+2) .icon{
-    background: #ff842d;
-}
-.all-func .function-item:nth-of-type(5n+3) .icon{
-    background: #66a3ff;
-}
-.all-func .function-item:nth-of-type(5n+4) .icon{
-    background: #ff5353;
-}
-.all-func .function-item:nth-of-type(5n+5) .icon{
-    background: #00ddd5;
-}
-
-
-.all-func .function-item .icon .ajy-icon{
-    font-size: 35px;
-}
-.all-func .function-item h4{
-    font-size: 16px;
-    color: #333;
-    line-height: 50px;
-    margin: 0;padding: 0;
-}
-.all-func .function-item p{
-    font-size: 16px;
-    color: #333;
-    line-height: 24px;
-}
-
-.clearfix {
-    zoom: 1;
-}
-
-    </style>
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
     <div id="load-mask" style="position:fixed;width:100%;top: 0;bottom: 0;z-index:1000;">
@@ -143,6 +76,17 @@
                   <li class="footer"><a href="#">查看全部</a></li>
                 </ul>
               </li>
+              <li><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="语言切换" aria-expanded="false"><i class="fa fa-language">语言</i></a>
+                <ul class="dropdown-menu">
+                  <li class="active">
+                      <a href="?ref=addtabs&amp;lang=zh-cn">简体中文</a>
+                  </li>
+                  <li class="">
+                      <a href="?ref=addtabs&amp;lang=en">English</a>
+                  </li>
+              </ul>
+              </li>
+              <li><a href="#" data-toggle="fullscreen" title="全屏"><i class="fa fa-arrows-alt">全屏</i></a></li>
               <!-- Tasks: style can be found in dropdown.less -->
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
@@ -267,7 +211,6 @@
         </section>
         <!-- Main content -->
         <section class="content" id="maincontent">
-
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
       <footer class="main-footer">
@@ -296,7 +239,7 @@
  <!--    <script src="Content/plugins/jQueryUI/jquery-ui.min.js"></script> -->
 
     <script src="Content/bootstrap/bootstrap.js"></script>
-    <script src="Content/dist/js/app.min.js"></script>
+    <script src="Content/dist/js/app.js"></script>
     <!-- Slimscroll -->
     <script src="Content/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <script src="Content/plugins/datatables/jquery.dataTables.min.js"></script>

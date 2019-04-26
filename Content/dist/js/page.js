@@ -13,7 +13,7 @@ $(document).ready(function () {
         x$('#maincontent').xhr('inner', './page/'+href+'.html?t=' + new Date().getTime());
     });
 
-    var username="riskevaluator1";
+    var username="manager";
     $.getJSON(host+"/api/SetCookie?name="+username+"&callback=?", function (data) {
         if(data.Res=="Success")
         {
@@ -23,6 +23,17 @@ $(document).ready(function () {
          
     });
     $("#load-mask").hide(); 
+
+    $(document).on('click', "[data-toggle='fullscreen']", function () {
+        var doc = document.documentElement;
+        if ($(document.body).hasClass("full-screen")) {
+            $(document.body).removeClass("full-screen");
+            document.exitFullscreen ? document.exitFullscreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitExitFullscreen && document.webkitExitFullscreen();
+        } else {
+            $(document.body).addClass("full-screen");
+            doc.requestFullscreen ? doc.requestFullscreen() : doc.mozRequestFullScreen ? doc.mozRequestFullScreen() : doc.webkitRequestFullscreen ? doc.webkitRequestFullscreen() : doc.msRequestFullscreen && doc.msRequestFullscreen();
+        }
+    });
     //  $.ajax({
     //         type: "GET",
     //         url:host+"/api/workitemlist?state=0",
